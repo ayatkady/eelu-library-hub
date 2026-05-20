@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EELU Library Hub – Create Account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="page-nav">
+    <a href="index.html" class="page-nav-link"><i class="bi bi-grid me-1"></i>All pages</a>
+    <a href="login.html" class="page-nav-link">Login</a>
+  </nav>
+
+  <div class="page-wrapper d-flex align-items-center justify-content-center">
+    <div class="container-xxl">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-12 mb-5 mb-lg-0">
+          <div class="left-panel text-white">
+            <div class="mb-4">
+              <div class="logo-icon d-inline-flex align-items-center justify-content-center me-2">
+                <i class="bi bi-book"></i>
+              </div>
+              <span class="logo-text fw-semibold">EELU Library Hub</span>
+              <div class="logo-subtext">Egyptian E-Learning University</div>
+            </div>
+
+            <h1 class="display-5 fw-semibold mb-3">Welcome to Your Digital Library</h1>
+            <p class="lead mb-4">
+              Access thousands of academic resources for Business Administration and
+              Information Technology programs.
+            </p>
+
+            <div class="feature-list">
+              <div class="feature-item d-flex">
+                <div class="feature-icon me-3">
+                  <i class="bi bi-collection"></i>
+                </div>
+                <div>
+                  <div class="feature-title">Extensive Collection</div>
+                  <div class="feature-text">Digital and physical books for all years.</div>
+                </div>
+              </div>
+
+              <div class="feature-item d-flex">
+                <div class="feature-icon me-3">
+                  <i class="bi bi-mortarboard"></i>
+                </div>
+                <div>
+                  <div class="feature-title">Academic Excellence</div>
+                  <div class="feature-text">Supporting BA and IT students.</div>
+                </div>
+              </div>
+
+              <div class="feature-item d-flex">
+                <div class="feature-icon me-3">
+                  <i class="bi bi-universal-access"></i>
+                </div>
+                <div>
+                  <div class="feature-title">Accessibility First</div>
+                  <div class="feature-text">Features for students with special needs.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 col-md-10">
+          <div class="card register-card shadow-lg border-0">
+            <div class="card-body p-4 p-md-5">
+              <h2 class="card-title mb-1">Create New Account</h2>
+              <p class="text-muted mb-4">Register with your university email</p>
+
+              <form id="registerForm">
+                <div class="mb-3">
+                  <label for="fullName" class="form-label">Full Name</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light">
+                      <i class="bi bi-person"></i>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="fullName"
+                      placeholder="Enter your full name"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="universityEmail" class="form-label">University Email</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light">
+                      <i class="bi bi-envelope"></i>
+                    </span>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="universityEmail"
+                      placeholder="student@eelu.edu.eg"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light">
+                      <i class="bi bi-lock"></i>
+                    </span>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      placeholder="Enter your password"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="faculty" class="form-label">Faculty</label>
+                  <select id="faculty" class="form-select" required>
+                    <option selected>Information Technology (IT)</option>
+                    <option>Business Administration (BA)</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+
+                <div class="mb-4">
+                  <label for="academicYear" class="form-label">Academic Year</label>
+                  <select id="academicYear" class="form-select" required>
+                    <option selected>Year 1</option>
+                    <option>Year 2</option>
+                    <option>Year 3</option>
+                    <option>Year 4</option>
+                  </select>
+                </div>
+
+                <div class="d-grid mb-3">
+                  <button type="submit" class="btn btn-primary btn-lg">
+                    Register
+                  </button>
+                </div>
+              </form>
+
+              <div class="text-center mb-3">
+                <span class="text-muted">Already have an account?</span>
+                <a href="login.html" class="login-link">Login here</a>
+              </div>
+
+              <div class="small text-muted text-center">
+                Demo credentials: any email and password<br />
+                Use <span class="fw-semibold">"admin@eelu.edu.eg"</span> for admin access
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="register.js" defer></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>
+</body>
+</html>
