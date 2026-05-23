@@ -1,75 +1,42 @@
-const loginForm =
-document.getElementById("loginForm");
+const loginForm = document.getElementById("loginForm");
 
 loginForm.addEventListener("submit", function(e) {
-
   e.preventDefault();
 
-  const email =
-  document.getElementById("loginEmail").value.trim();
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
 
-  const password =
-  document.getElementById("loginPassword").value.trim();
-
+  // Validation
   if (!email || !password) {
-
-    alert("Please fill all fields");
-
+    alert("Please fill in all fields");
     return;
-
   }
 
-  fetch(
-    "http://localhost:3000/api/auth/login",
+  if (!email.includes("@")) {
+    alert("Please enter a valid email");
+    return;
+  }
 
-    {
+  const storedEmail = localStorage.getItem("userEmail");
+  const storedPassword = localStorage.getItem("userPassword");
 
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-
-        email,
-        password
-
-      })
-
+  if (storedEmail && storedPassword) {
+    if (email === storedEmail && password === storedPassword) {
+      localStorage.setItem("isLoggedIn", "true");
+      alert("Login Successful!");
+      window.location.href = "combined.html";
+    } else {
+      alert("Invalid Email or Password");
     }
-  )
-
-  .then(res => res.json())
-
-  .then(data => {
-
-    alert(data.message);
-
-    if (data.success) {
-
-      localStorage.setItem(
-        "currentUser",
-        JSON.stringify(data.user)
-      );
-
-      localStorage.setItem(
-        "isLoggedIn",
-        "true"
-      );
-
-      window.location.href =
-      "combined.html";
-    }
-
-  })
-
-  .catch(error => {
-
-    console.error(error);
-
-    alert("Server Error");
-
-  });
-
+  } else {
+    // First login - demo mode
+    localStorage.setItem("userName", email.split("@")[0]);
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userPassword", password);
+    localStorage.setItem("faculty", "Information Technology");
+    localStorage.setItem("academicYear", "Year 1");
+    localStorage.setItem("isLoggedIn", "true");
+    alert("Demo Login Successful!");
+    window.location.href = "combined.html";
+  }
 });

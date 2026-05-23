@@ -1,1 +1,470 @@
-earch.html \=
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EELU Library Hub – All in One</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="combined-page">
+  <!-- Main header -->
+  <header class="main-header">
+    <div class="brand">
+      <div class="brand-icon"><i class="bi bi-book"></i></div>
+      <div>
+        <div class="brand-title">EELU Library Hub</div>
+        <div class="brand-sub">Egyptian E-Learning University</div>
+      </div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html"><i class="bi bi-house"></i> Home</a>
+      <a href="search.html"><i class="bi bi-search"></i> Search</a>
+      <a href="my-borrowed.html"><i class="bi bi-book"></i> My Books</a>
+      <a href="accessibility.html"><i class="bi bi-universal-access"></i> Accessibility</a>
+      <a href="contact.html"><i class="bi bi-telephone"></i> Contact</a>
+    </nav>
+    <div class="user-block">
+      <div class="user-avatar"><i class="bi bi-person"></i></div>
+      <div>
+        <div class="user-name" id="studentName"></div>
+        <div class="user-meta" id="studentInfo"></div>
+      </div>
+      <button type="button" class="btn-logout" id="logoutBtn"><i class="bi bi-box-arrow-right"></i> Logout</button>
+    </div>
+  </header>
+ <!-- Search Books (full screen combined) -->
+  <section class="search-section" id="search">
+    <div class="container-xl">
+      <h2 class="search-heading">Search Books</h2>
+      <p class="search-subtitle">Find books and academic resources for your studies</p>
+
+      <div class="search-filter-card">
+        <div class="search-filter-header">
+          <div class="search-filter-header-icon">
+            <i class="bi bi-funnel"></i>
+          </div>
+          <div>
+            <div class="search-filter-header-title">Search &amp; Filter</div>
+            <div class="search-filter-header-text">Use filters to narrow down your search results</div>
+          </div>
+        </div>
+
+        <div class="search-input-row">
+          <div class="search-input-wrapper">
+            <i class="bi bi-search"></i>
+            <input
+              type="text"
+              id="searchInput"
+              class="filter-input"
+              placeholder="Search by title, author, or subject..."
+              aria-label="Search books by title, author, or subject"
+            />
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <div class="filter-group">
+            <label for="filterFaculty">Faculty</label>
+            <select id="filterFaculty" class="filter-select">
+              <option>All Faculties</option>
+              <option>Business Administration (BA)</option>
+              <option>Information Technology (IT)</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterYear">Year (الفرقة)</label>
+            <select id="filterYear" class="filter-select">
+              <option>All Years</option>
+              <option>Year 1</option>
+              <option>Year 2</option>
+              <option>Year 3</option>
+              <option>Year 4</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterCategory">Category</label>
+            <select id="filterCategory" class="filter-select">
+              <option>All Categories</option>
+              <option>Computer Science</option>
+              <option>Software Engineering</option>
+              <option>Business Administration</option>
+              <option>Finance</option>
+              <option>Human Resources</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button type="button" class="btn-clear-filters">Clear Filters</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="search-results-count" id="resultsCount">Showing 9 of 9 books</p>
+
+      <div class="book-grid">
+        <!-- IT books -->
+        <article class="book-card"
+        onclick="goToDetails(this)"
+        data-id="1"
+data-title="Data Structures and Algorithms in Java"
+data-author="Robert Lafore"
+data-category="Computer Science"
+data-faculty="IT"
+data-year="Year 2">
+          <img src="https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Laptop with code on screen" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">IT</span>
+              <span class="badge-year">Year 2</span>
+            </div>
+            <div class="book-title">Data Structures and Algorithms in Java</div>
+            <div class="book-author">by Robert Lafore</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-journal-code"></i>
+                <span>Computer Science</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2017</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF available</span>
+              </li>
+            </ul>
+            <div class="book-availability">12 of 20 copies available</div>
+          </div>
+        </article>
+
+        <article class="book-card"
+        onclick="goToDetails(this)"
+        data-id="2"
+data-title="Web Development with HTML, CSS, and JavaScript"
+data-author="Jon Duckett"
+data-category="Web Development"
+data-faculty="IT"
+data-year="Year 2">
+          <img src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Developer workspace with laptop" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">IT</span>
+              <span class="badge-year">Year 2</span>
+            </div>
+            <div class="book-title">Web Development with HTML, CSS, and JavaScript</div>
+            <div class="book-author">by Jon Duckett</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-journal-code"></i>
+                <span>Web Development</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2014</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF &amp; ePub available</span>
+              </li>
+            </ul>
+            <div class="book-availability">10 of 18 copies available</div>
+          </div>
+        </article>
+
+        <article class="book-card"
+onclick="goToDetails(this)"
+data-id="3"
+data-title="Artificial Intelligence: A Modern Approach"
+data-author="Stuart Russell Peter Norvig"
+data-category="Computer Science"
+data-faculty="IT"
+data-year="Year 3">
+          <img src="https://images.pexels.com/photos/1181273/pexels-photo-1181273.jpeg?auto=compress&cs=tinysrgb&w=800" alt="AI illustration" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">IT</span>
+              <span class="badge-year">Year 3</span>
+            </div>
+            <div class="book-title">Artificial Intelligence: A Modern Approach</div>
+            <div class="book-author">by Stuart Russell &amp; Peter Norvig</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-cpu"></i>
+                <span>Computer Science</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2020</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF available</span>
+              </li>
+            </ul>
+            <div class="book-availability">7 of 15 copies available</div>
+          </div>
+        </article>
+
+        <article class="book-card"
+onclick="goToDetails(this)"
+data-id="4"
+data-title="Software Engineering: A Practitioner's Approach"
+data-author="Roger Pressman"
+data-category="Software Engineering"
+data-faculty="IT"
+data-year="Year 3">
+          <img src="https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Code on monitor" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">IT</span>
+              <span class="badge-year">Year 3</span>
+            </div>
+            <div class="book-title">Software Engineering: A Practitioner's Approach</div>
+            <div class="book-author">by Roger Pressman</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-journal-code"></i>
+                <span>Software Engineering</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2014</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF &amp; ePub available</span>
+              </li>
+            </ul>
+            <div class="book-availability">6 of 14 copies available</div>
+          </div>
+        </article>
+
+        <article class="book-card"
+onclick="goToDetails(this)"
+data-id="5"
+data-title="Cloud Computing Concepts &amp; Architecture"
+data-author="Thomas Erl"
+data-category="Cloud Computing"
+data-faculty="IT"
+data-year="Year 4">
+          <img src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Earth from space" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">IT</span>
+              <span class="badge-year">Year 4</span>
+            </div>
+            <div class="book-title">Cloud Computing Concepts &amp; Architecture</div>
+            <div class="book-author">by Thomas Erl</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-cloud"></i>
+                <span>Cloud Computing</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2013</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF available</span>
+              </li>
+            </ul>
+            <div class="book-availability">6 of 10 copies available</div>
+          </div>
+        </article>
+
+        <article class="book-card"
+onclick="goToDetails(this)"
+data-id="6" 
+data-title="Cybersecurity Essentials"
+data-author="Charles J Brooks"
+data-category="Cybersecurity"
+data-faculty="IT"
+data-year="Year 4">
+          <img src="https://images.pexels.com/photos/5380651/pexels-photo-5380651.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cybersecurity visualization" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">IT</span>
+              <span class="badge-year">Year 4</span>
+            </div>
+            <div class="book-title">Cybersecurity Essentials</div>
+            <div class="book-author">by Charles J. Brooks</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-shield-lock"></i>
+                <span>Cybersecurity</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2018</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF available</span>
+              </li>
+            </ul>
+            <div class="book-availability">5 of 12 copies available</div>
+          </div>
+        </article>
+
+        <!-- BA books -->
+        <article class="book-card"
+onclick="goToDetails(this)"
+data-id="7"
+data-title="Principles of Marketing"
+data-author="Philip Kotler Gary Armstrong"
+data-category="Marketing"
+data-faculty="BA"
+data-year="Year 1">
+          <img src="https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Marketing analytics on laptop" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">BA</span>
+              <span class="badge-year">Year 1</span>
+            </div>
+            <div class="book-title">Principles of Marketing</div>
+            <div class="book-author">by Philip Kotler &amp; Gary Armstrong</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-graph-up-arrow"></i>
+                <span>Marketing</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2017</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF &amp; ePub available</span>
+              </li>
+            </ul>
+            <div class="book-availability">15 of 25 copies available</div>
+          </div>
+        </article>
+
+        <article class="book-card"
+onclick="goToDetails(this)"
+data-id="8"
+data-title="Introduction to Business"
+data-author="Jeff Madura"
+data-category="Business Administration"
+data-faculty="BA"
+data-year="Year 1">
+<img src="https://images.pexels.com/photos/1483938/pexels-photo-1483938.jpeg?auto=compress&cs=tinysrgb&w=800"
+onerror="this.src='https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800'"
+alt="Business meeting" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">BA</span>
+              <span class="badge-year">Year 1</span>
+            </div>
+            <div class="book-title">Introduction to Business</div>
+            <div class="book-author">by Jeff Madura</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-briefcase"></i>
+                <span>Business Administration</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2017</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF &amp; ePub available</span>
+              </li>
+            </ul>
+            <div class="book-availability">11 of 20 copies available</div>
+          </div>
+        </article>
+
+        <article class="book-card"
+onclick="goToDetails(this)"
+data-id="9"
+data-title="Financial Accounting"
+data-author="Jerry J Weygandt"
+data-category="Accounting"
+data-faculty="BA"
+data-year="Year 2">
+          <img src="https://images.pexels.com/photos/164686/pexels-photo-164686.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Accounting workspace" />
+          <div class="book-card-body">
+            <div class="book-meta-row">
+              <span class="badge-faculty">BA</span>
+              <span class="badge-year">Year 2</span>
+            </div>
+            <div class="book-title">Financial Accounting</div>
+            <div class="book-author">by Jerry J. Weygandt</div>
+            <ul class="book-info-list">
+              <li class="book-info-row">
+                <i class="bi bi-calculator"></i>
+                <span>Accounting</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Published 2019</span>
+              </li>
+              <li class="book-info-row">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF available</span>
+              </li>
+            </ul>
+            <div class="book-availability">13 of 22 copies available</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="main-footer" id="contact">
+    <div class="footer-grid">
+      <div>
+        <h4>EELU Library Hub</h4>
+        <p>The Egyptian E-Learning University digital library provides comprehensive academic resources for students and faculty of Business Administration and Information Technology. Supporting inclusive education with accessibility features for all students.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#search">Search Books</a></li>
+          <li><a href="#accessibility">Accessibility</a></li>
+          <li><a href="#contact">Contact Support</a></li>
+          <li><a href="https://eelu.edu.eg" target="_blank" rel="noopener">EELU Official Website</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact Us</h4>
+        <div class="contact-item"><i class="bi bi-geo-alt"></i> Cairo, Egypt</div>
+        <div class="contact-item"><i class="bi bi-telephone"></i> +20 123 456 789</div>
+        <div class="contact-item"><i class="bi bi-envelope"></i> library@eelu.edu.eg</div>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copy">
+      © 2026 EELU Library Hub. All rights reserved. | Egyptian E-Learning University
+    </div>
+  </footer>
+
+  <script>
+    // Update user data in header
+    const studentName = localStorage.getItem("userName") || "Student";
+    const faculty = localStorage.getItem("faculty") || "IT";
+    const academicYear = localStorage.getItem("academicYear") || "Year 1";
+    
+    document.getElementById("studentName").textContent = studentName;
+    document.getElementById("studentInfo").textContent = `${faculty} - ${academicYear}`;
+  </script>
+  <script src="search.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
