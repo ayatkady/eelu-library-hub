@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": 1779480638028,
+      "fullName": "ayat_elkady",
+      "email": "ayatkady9@gmail.com",
+      "password": "123456",
+      "faculty": "Information Technology (IT)",
+      "academicYear": "Year 1"
+    },
+    {
+      "id": 1779481591574,
+      "fullName": "ali",
+      "email": "ali@gmail.com",
+      "password": "222222",
+      "faculty": "Information Technology (IT)",
+      "academicYear": "Year 1"
+    }
+  ]
+}
