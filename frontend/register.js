@@ -1,6 +1,6 @@
 const registerForm = document.getElementById("registerForm");
 
-registerForm.addEventListener("submit", function(e) {
+registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const fullName = document.getElementById("fullName").value.trim();
@@ -9,35 +9,36 @@ registerForm.addEventListener("submit", function(e) {
   const faculty = document.getElementById("faculty").value;
   const academicYear = document.getElementById("academicYear").value;
 
-  // Validation
   if (!fullName || !email || !password) {
     alert("Please fill all fields");
     return;
   }
 
-  if (!email.includes("@")) {
-    alert("Please enter a valid university email");
-    return;
+  try {
+    const res = await fetch("http://localhost:3000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        fullName,
+        email,
+        password,
+        faculty,
+        academicYear
+      })
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+    if (data.success) {
+      window.location.href = "login.html";
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Server Error");
   }
-
-  if (password.length < 6) {
-    alert("Password must be at least 6 characters");
-    return;
-  }
-
-  const existingEmail = localStorage.getItem("userEmail");
-
-  if (existingEmail && email === existingEmail) {
-    alert("Account already exists with this email!");
-    return;
-  }
-
-  localStorage.setItem("userName", fullName);
-  localStorage.setItem("userEmail", email);
-  localStorage.setItem("userPassword", password);
-  localStorage.setItem("faculty", faculty);
-  localStorage.setItem("academicYear", academicYear);
-
-  alert("Registration Successful! Please login.");
-  window.location.href = "login.html";
 });

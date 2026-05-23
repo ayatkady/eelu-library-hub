@@ -15,6 +15,14 @@
       "password": "222222",
       "faculty": "Information Technology (IT)",
       "academicYear": "Year 1"
+    },
+    {
+      "id": 1779513073458,
+      "fullName": "ahmed",
+      "email": "ahmed@gmail.com",
+      "password": "4444444",
+      "faculty": "Information Technology (IT)",
+      "academicYear": "Year 1"
     }
   ]
 }
