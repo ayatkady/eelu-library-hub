@@ -14,7 +14,11 @@ connectDB();
 
 // routes
 const authRoutes = require("./routes/auth");
+const bookRoutes = require("./routes/books");
+const borrowedRoutes = require("./routes/borrowed");
 app.use("/api/auth", authRoutes);
+app.use("/api/books", bookRoutes);
+app.use("/api/borrowed", borrowedRoutes);
 
 // test route
 app.get("/", (req, res) => {
