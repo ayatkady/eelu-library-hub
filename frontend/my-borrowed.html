@@ -49,7 +49,7 @@
       <div class="borrowed-top-stats">
         <div class="borrowed-stat-card">
           <div class="borrowed-stat-label">Total Borrowed</div>
-          <div class="borrowed-stat-value">0</div>
+          <div class="borrowed-stat-value totalBorrowedCount">0</div>
           <div class="borrowed-stat-icon">
             <i class="bi bi-book"></i>
           </div>
@@ -69,8 +69,9 @@
           </div>
         </div>
       </div>
+<div class="borrowed-books-container">
 
-      <div class="borrowed-empty-card">
+      <div id="borrowedEmpty" class="borrowed-empty-card">
         <div class="borrowed-empty-icon">
           <i class="bi bi-journal-bookmark"></i>
         </div>
@@ -82,6 +83,9 @@
           Browse Books
         </a>
       </div>
+    </div>
+    <div id="borrowedContainer" class="book-grid"></div>
+
     </div>
   </section>
 

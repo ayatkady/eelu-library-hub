@@ -1,12 +1,22 @@
-// Check login
-if (!localStorage.getItem("isLoggedIn")) {
+
+const token = localStorage.getItem("token");
+if (!token) {
   window.location.href = "login.html";
 }
-
 // ================= USER =================
-const studentName = localStorage.getItem("userName") || "Student";
-const faculty = localStorage.getItem("faculty") || "IT";
-const academicYear = localStorage.getItem("academicYear") || "Year 1";
+const currentUser =
+JSON.parse(
+  localStorage.getItem("currentUser")
+);
+
+const studentName =
+currentUser?.fullName || "Student";
+
+const faculty =
+currentUser?.faculty || "IT";
+
+const academicYear =
+currentUser?.academicYear || "Year 1";
 
 document.getElementById("studentName").textContent = studentName;
 document.getElementById("studentInfo").textContent = `${faculty} - ${academicYear}`;

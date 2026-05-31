@@ -1,5 +1,5 @@
 // Check if user is logged in
-if (!localStorage.getItem("isLoggedIn")) {
+if (!localStorage.getItem("token")) {
   window.location.href = "login.html";
 }
 
@@ -105,5 +105,45 @@ function goToDetails(card){
     `book-details.html?id=${bookId}`;
 
 }
+  
+async function borrowBook(event, button) {
 
+  event.stopPropagation();
 
+  const bookId = button.dataset.id;
+
+  const token = localStorage.getItem("token"); // 👈 هنا
+
+  if (!token) {
+    alert("Please login again");
+    window.location.href = "login.html";
+    return;
+  }
+
+  try {
+
+    const response = await fetch("http://localhost:3000/api/borrowed", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // 👈 هنا أهم حاجة
+      },
+      body: JSON.stringify({
+        bookId
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message);
+      return;
+    }
+
+    alert("Book borrowed successfully!");
+
+  } catch (error) {
+    console.log(error);
+    alert("Server error");
+  }
+}
