@@ -1239,8 +1239,11 @@ body {
 }
 
 .combined-page .contact-send-btn {
-  border-radius: 999px;
+  border-radius: 10px;
   padding-inline: 1.8rem;
+  background-color: #21426c;
+      width: 450px;
+
 }
 
 .combined-page .contact-side-column > * + * {
@@ -1286,8 +1289,9 @@ body {
 }
 
 .combined-page .contact-call-btn {
-  border-radius: 999px;
+  border-radius: 10px;
   font-size: 0.9rem;
+  width: 250px;
 }
 
 .combined-page .contact-links-list {
