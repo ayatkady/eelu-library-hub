@@ -1,5 +1,6 @@
-// Check if user is logged in
-if (!localStorage.getItem("token")) {
+
+const token = localStorage.getItem("token");
+if (!token) {
   window.location.href = "login.html";
 }
 
@@ -20,7 +21,7 @@ if (logoutBtn) {
   });
 }
 
-// Font size controls
+Font size controls
 const fontSizeButtons = document.querySelectorAll(".access-size-btn");
 fontSizeButtons.forEach(function(btn) {
   btn.addEventListener("click", function() {
