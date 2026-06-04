@@ -70,134 +70,143 @@ async function borrowBook(event, button) {
 }
 
 async function loadBorrowedBooks() {
-  console.log("LOAD FUNCTION STARTED");
 
-
-const token =
-localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
 try {
 
-const response =
-await fetch(
+const response = await fetch(
 "http://localhost:3000/api/borrowed",
 {
 method:"GET",
-
 headers:{
-Authorization:
-`Bearer ${token}`
+Authorization:`Bearer ${token}`
 }
 }
 );
-console.log(response);
 
-const result =
-await response.json();
+const result = await response.json();
 
-document.querySelector(
-".totalBorrowedCount"
-).textContent =
+document.querySelector(".totalBorrowedCount").textContent =
 result.totalBorrowed;
 
+document.querySelector(".currentlyBorrowedTitle").textContent =
+`Currently Borrowed (${result.totalBorrowed})`;
+
 const container =
-document.getElementById(
-"borrowedContainer"
-);
+document.getElementById("borrowedContainer");
 
 const emptyCard =
-document.getElementById(
-"borrowedEmpty"
-);
+document.getElementById("borrowedEmpty");
 
 container.innerHTML = "";
 
+if(result.data.length === 0){
 
-
-if(result.data.length===0){
-
-emptyCard.style.display="block";
+emptyCard.style.display = "block";
 
 return;
 
 }
 
-emptyCard.style.display="none";
+emptyCard.style.display = "none";
 
+result.data.forEach(book => {
 
+const borrowDate =
+new Date(book.borrowDate).toLocaleDateString();
 
-result.data.forEach(book=>{
+const dueDate =
+new Date(
+new Date(book.borrowDate).getTime() +
+14 * 24 * 60 * 60 * 1000
+).toLocaleDateString();
 
 container.innerHTML += `
 
-<article class="book-card">
+<div class="col-lg-6">
 
-<div class="book-card-body">
+  <div class="card h-100 border rounded-4 shadow-sm">
 
-<div class="book-meta-row">
+    <div class="card-body">
 
-<span class="badge-faculty">
-${book.bookId?.category || "Book"}
-</span>
+      <div class="d-flex">
 
-<span class="badge-year">
-${book.borrowedDays} days
-</span>
+        <img
+          src="${book.bookId?.coverImage || 'https://placehold.co/95x130'}"
+          alt="${book.bookId?.title}"
+          class="rounded"
+          width="95"
+          height="130"
+        >
+
+        <div class="ms-3 flex-grow-1">
+
+          <div class="d-flex justify-content-between">
+
+            <h4 class="fw-semibold">
+              ${book.bookId?.title || "Unknown Book"}
+            </h4>
+
+            <span class="badge bg-success align-self-start">
+              ${book.status}
+            </span>
+
+          </div>
+
+          <p class="text-secondary mb-2">
+            by ${book.bookId?.author || "Unknown Author"}
+          </p>
+
+          <span class="badge text-dark border">
+            ${book.bookId?.category || "Book"}
+          </span>
+
+          <div class="mt-4">
+
+            <p class="mb-2">
+              <i class="bi bi-calendar-event me-2"></i>
+              Borrowed: ${borrowDate}
+            </p>
+
+            <p class="mb-0">
+              <i class="bi bi-clock me-2"></i>
+              Due: ${dueDate}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="row mt-4 g-2">
+
+        <div class="col-6">
+          <button
+            class="btn btn-outline-danger w-100"
+            onclick="returnBook('${book._id}')"
+          >
+            <i class="bi bi-arrow-return-left me-2"></i>
+            Return Book
+          </button>
+        </div>
+
+        <div class="col-6">
+          <button
+            class="btn btn-outline-secondary w-100"
+          >
+            View Details
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
-
-<div class="book-title">
-${book.bookId?.title || "Unknown Book"}
-</div>
-
-<div class="book-author">
-by ${book.bookId?.author || "Unknown Author"}
-</div>
-
-<ul class="book-info-list">
-
-<li class="book-info-row">
-
-<i class="bi bi-check-circle"></i>
-
-<span>
-Status:
-${book.status}
-</span>
-
-</li>
-
-<li class="book-info-row">
-
-<i class="bi bi-calendar"></i>
-
-<span>
-
-Borrowed:
-
-${new Date(
-book.borrowDate
-).toLocaleDateString()}
-
-</span>
-
-</li>
-
-</ul>
-
-<button
-class="btn btn-danger mt-3 w-100"
-onclick="returnBook(
-'${book._id}'
-)">
-
-Return Book
-
-</button>
-
-</div>
-
-</article>
 
 `;
 
@@ -212,4 +221,5 @@ console.log(error);
 }
 
 }
+
 loadBorrowedBooks();

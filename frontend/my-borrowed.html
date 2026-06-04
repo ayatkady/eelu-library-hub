@@ -41,54 +41,233 @@
   </header>
 
   <!-- My Borrowed Books content -->
-  <section class="borrowed-section" id="my-books">
-    <div class="container-xl">
-      <h1 class="borrowed-heading">My Borrowed Books</h1>
-      <p class="borrowed-subtitle">Manage your borrowed and reserved books</p>
+  <section class="borrowed-section py-5">
+  <div class="container-xl">
 
-      <div class="borrowed-top-stats">
-        <div class="borrowed-stat-card">
-          <div class="borrowed-stat-label">Total Borrowed</div>
-          <div class="borrowed-stat-value totalBorrowedCount">0</div>
-          <div class="borrowed-stat-icon">
-            <i class="bi bi-book"></i>
-          </div>
-        </div>
-        <div class="borrowed-stat-card">
-          <div class="borrowed-stat-label">Reserved</div>
-          <div class="borrowed-stat-value">0</div>
-          <div class="borrowed-stat-icon">
-            <i class="bi bi-bookmark"></i>
-          </div>
-        </div>
-        <div class="borrowed-stat-card borrowed-stat-warning">
-          <div class="borrowed-stat-label">Due Soon</div>
-          <div class="borrowed-stat-value">0</div>
-          <div class="borrowed-stat-icon">
-            <i class="bi bi-exclamation-circle"></i>
+    <h1 class="fw-bold borrowed-heading mb-2">My Borrowed Books</h1>
+    <p class="text-secondary mb-5">
+      Manage your borrowed and reserved books
+    </p>
+
+    <!-- Statistics -->
+    <div class="row g-4 mb-5">
+
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <div class="text-muted">Total Borrowed</div>
+              <h2 class="fw-bold mb-0">2</h2>
+            </div>
+            <i class="bi bi-book text-primary fs-1"></i>
           </div>
         </div>
       </div>
-<div class="borrowed-books-container">
 
-      <div id="borrowedEmpty" class="borrowed-empty-card">
-        <div class="borrowed-empty-icon">
-          <i class="bi bi-journal-bookmark"></i>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <div class="text-muted">Reserved</div>
+              <h2 class="fw-bold mb-0">0</h2>
+            </div>
+            <i class="bi bi-bookmark text-primary fs-1"></i>
+          </div>
         </div>
-        <h2 class="borrowed-empty-title">No Borrowed Books</h2>
-        <p class="borrowed-empty-text">
-          You haven&apos;t borrowed or reserved any books yet.
-        </p>
-        <a href="combined.html#search" class="btn btn-primary borrowed-browse-btn">
-          Browse Books
-        </a>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <div class="text-muted">Due Soon</div>
+              <h2 class="fw-bold text-warning mb-0">0</h2>
+            </div>
+            <i class="bi bi-exclamation-circle text-warning fs-1"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Borrowed Books -->
+    <h2 class="fw-bold borrowed-heading mb-4">
+      Currently Borrowed (2)
+    </h2>
+
+    <div class="row g-4">
+
+      <!-- Book Card -->
+      <div class="col-lg-6">
+        <div class="card h-100 border rounded-4 shadow-sm">
+
+          <div class="card-body">
+
+            <div class="d-flex">
+
+              <img src="images/book1.jpg"
+                   alt="Book"
+                   class="rounded"
+                   width="95"
+                   height="130">
+
+              <div class="ms-3 flex-grow-1">
+
+                <div class="d-flex justify-content-between">
+                  <h4 class="fw-semibold">
+                    Database Systems: Design and Implementation
+                  </h4>
+
+                  <span class="badge bg-success align-self-start">
+                    Active
+                  </span>
+                </div>
+
+                <p class="text-secondary mb-2">
+                  by Hector Garcia-Molina
+                </p>
+
+                <span class="badge text-dark border">
+                  IT - Year 1
+                </span>
+
+                <div class="mt-4">
+
+                  <p class="mb-2">
+                    <i class="bi bi-calendar-event me-2"></i>
+                    Borrowed: Jun 01, 2026
+                  </p>
+
+                  <p class="mb-0">
+                    <i class="bi bi-clock me-2"></i>
+                    Due: Jun 15, 2026 (12 days remaining)
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row mt-4 g-2">
+
+              <div class="col-6">
+                <button class="btn btn-outline-secondary w-100">
+                  <i class="bi bi-check-circle me-2"></i>
+                  Return Book
+                </button>
+              </div>
+
+              <div class="col-6">
+                <button class="btn btn-outline-secondary w-100">
+                  View Details
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Book Card -->
+      <div class="col-lg-6">
+        <div class="card h-100 border rounded-4 shadow-sm">
+
+          <div class="card-body">
+
+            <div class="d-flex">
+
+              <img src="images/book2.jpg"
+                   alt="Book"
+                   class="rounded"
+                   width="95"
+                   height="130">
+
+              <div class="ms-3 flex-grow-1">
+
+                <div class="d-flex justify-content-between">
+                  <h4 class="fw-semibold">
+                    Cloud Computing: Concepts, Technology & Architecture
+                  </h4>
+
+                  <span class="badge bg-success align-self-start">
+                    Active
+                  </span>
+                </div>
+
+                <p class="text-secondary mb-2">
+                  by Thomas Erl
+                </p>
+
+                <span class="badge text-dark border">
+                  IT - Year 4
+                </span>
+
+                <div class="mt-4">
+
+                  <p class="mb-2">
+                    <i class="bi bi-calendar-event me-2"></i>
+                    Borrowed: Jun 01, 2026
+                  </p>
+
+                  <p class="mb-0">
+                    <i class="bi bi-clock me-2"></i>
+                    Due: Jun 15, 2026 (12 days remaining)
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row mt-4 g-2">
+
+              <div class="col-6">
+                <button class="btn btn-outline-secondary w-100">
+                  <i class="bi bi-check-circle me-2"></i>
+                  Return Book
+                </button>
+              </div>
+
+              <div class="col-6">
+                <button class="btn btn-outline-secondary w-100">
+                  View Details
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Borrowing Information -->
+    <div class="card border-primary mt-5">
+      <div class="card-body p-4">
+
+        <h4 class="borrowed-heading fw-bold mb-4">
+          Borrowing Information
+        </h4>
+
+        <ul class="mb-0">
+          <li class="mb-2">Books can be borrowed for 14 days</li>
+          <li class="mb-2">Reserved books must be picked up within 3 days</li>
+          <li class="mb-2">Books can be renewed once if there are no pending reservations</li>
+          <li class="mb-2">Late returns are subject to penalties</li>
+          <li>Contact the library for any issues: library@eelu.edu.eg</li>
+        </ul>
+
       </div>
     </div>
-    <div id="borrowedContainer" class="book-grid"></div>
 
-    </div>
-  </section>
-
+  </div>
+</section>
   <footer class="main-footer">
     <div class="footer-grid">
       <div>
@@ -107,14 +286,40 @@
       </div>
       <div>
         <h4>Contact Us</h4>
-        <div class="contact-item"><i class="bi bi-geo-alt"></i> Cairo, Egypt</div>
-        <div class="contact-item"><i class="bi bi-telephone"></i> +20 123 456 789</div>
-        <div class="contact-item"><i class="bi bi-envelope"></i> library@eelu.edu.eg</div>
-        <div class="social-icons">
-          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-          <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-        </div>
+               <div class="contact-item">
+  <i class="bi bi-geo-alt"></i>
+  <a href="https://www.google.com/maps?q=Cairo,Egypt" target="_blank">
+    Cairo, Egypt
+  </a>
+</div>
+
+<div class="contact-item">
+  <i class="bi bi-telephone"></i>
+  <a href="tel:+20123456789">
+    +20 123 456 789
+  </a>
+</div>
+
+<div class="contact-item">
+  <i class="bi bi-envelope"></i>
+  <a href="mailto:library@eelu.edu.eg">
+    library@eelu.edu.eg
+  </a>
+</div>
+
+<div class="social-icons">
+  <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+    <i class="bi bi-facebook"></i>
+  </a>
+
+  <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+    <i class="bi bi-twitter-x"></i>
+  </a>
+
+  <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+    <i class="bi bi-linkedin"></i>
+  </a>
+</div>
       </div>
     </div>
     <div class="footer-copy">

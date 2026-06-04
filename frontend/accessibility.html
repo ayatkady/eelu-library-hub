@@ -68,7 +68,7 @@
       </div>
 
       <!-- Text size + Alternative formats / Keyboard -->
-      <div class="access-grid-2col">
+      <div class="d-flex flex-column gap-3">
         <div class="access-card">
           <div class="access-card-header">
             <div class="access-card-icon"><i class="bi bi-type"></i></div>
@@ -90,7 +90,7 @@
           <div class="access-text-current">Current: <strong>100%</strong></div>
         </div>
 
-        <div class="access-card">
+        <div class="access-card ">
           <div class="access-card-header">
             <div class="access-card-icon"><i class="bi bi-book-half"></i></div>
             <div>
@@ -99,25 +99,59 @@
             </div>
           </div>
 
-          <div class="access-alt-grid">
-            <div class="access-alt-card">
-              <div class="access-alt-title">Audio Books</div>
-              <p class="access-alt-text">Select books available in audio format for listening.</p>
-            </div>
-            <div class="access-alt-card">
-              <div class="access-alt-title">PDF Downloads</div>
-              <p class="access-alt-text">Compatible with most screen readers and text-to-speech software.</p>
-            </div>
-            <div class="access-alt-card">
-              <div class="access-alt-title">Braille Materials</div>
-              <p class="access-alt-text">Braille versions available for select academic materials.</p>
-            </div>
-            <div class="access-alt-card">
-              <div class="access-alt-title">ePub Format</div>
-              <p class="access-alt-text">Reflowable text that adapts to your device and font preferences.</p>
-            </div>
-          </div>
+  <div class="row g-4">
+    <div class="col-12 col-md-6">
 
+  <div class="access-alt-card">
+    <div class="access-alt-title">
+      <i class="bi bi-headphones me-2"></i>
+      Audio Books
+    </div>
+    <p class="access-alt-text">
+      Select books available in audio format for listening.
+    </p>
+  </div>
+  </div>
+
+      <div class="col-12 col-md-6">
+  <div class="access-alt-card">
+    <div class="access-alt-title">
+      <i class="bi bi-download me-2"></i>
+      PDF Downloads
+    </div>
+    <p class="access-alt-text">
+      Compatible with most screen readers and text-to-speech software.
+    </p>
+  </div>
+  </div>
+
+    <div class="col-12 col-md-6">
+ <div class="access-alt-card">
+  <div class="access-alt-title">
+    <i class="bi bi-grid-3x3-gap-fill me-2"></i>
+    Braille Materials
+  </div>
+
+  <p class="access-alt-text">
+    Braille versions available for select academic materials.
+  </p>
+</div>
+</div>
+    <div class="col-12 col-md-6">
+
+  <div class="access-alt-card">
+    <div class="access-alt-title">
+      <i class="bi bi-file-earmark-text me-2"></i>
+      ePub Format
+    </div>
+    <p class="access-alt-text">
+      Reflowable text that adapts to your device and font preferences.
+    </p>
+  </div>
+    
+
+</div>
+       
           <div class="access-kb-shortcuts mt-3">
             <div class="fw-semibold mb-1">Keyboard Navigation</div>
             <div class="access-kb-row">
@@ -144,56 +178,86 @@
         </div>
       </div>
 
-      <!-- High contrast + Screen reader -->
-      <div class="access-toggle-grid">
-        <div class="access-toggle-card">
-          <div>
-            <div class="access-card-header mb-2">
-              <div class="access-card-icon"><i class="bi bi-eye"></i></div>
-              <div>
-                <div class="access-card-title">High Contrast Mode</div>
-                <p class="access-card-text mb-0">Enhance visibility with high contrast colors.</p>
-              </div>
+<!-- High contrast + Screen reader -->
+<div class="container mt-4">
+
+  <div class="row g-4">
+
+    <!-- Card 1 -->
+    <div class="col-12 col-lg-6">
+
+      <div class="access-toggle-card h-100">
+
+        <div>
+          <div class="access-card-header mb-2">
+            <div class="access-card-icon"><i class="bi bi-eye"></i></div>
+
+            <div>
+              <div class="access-card-title">High Contrast Mode</div>
+              <p class="access-card-text mb-0">
+                Enhance visibility with high contrast colors.
+              </p>
             </div>
-            <p class="access-toggle-info-text">
-              Enable High Contrast Mode to increase color contrast for better visibility and reduced eye strain.
-            </p>
           </div>
-          <div class="toggle-switch" aria-hidden="true">
-            <div class="toggle-knob"></div>
-          </div>
+
+          <p class="access-toggle-info-text">
+            Enable High Contrast Mode to increase color contrast for better visibility and reduced eye strain.
+          </p>
         </div>
 
-        <div class="access-toggle-card">
-          <div>
-            <div class="access-card-header mb-2">
-              <div class="access-card-icon"><i class="bi bi-volume-up"></i></div>
-              <div>
-                <div class="access-card-title">Screen Reader Support</div>
-                <p class="access-card-text mb-0">Enhanced support for screen readers and assistive technologies.</p>
-              </div>
-            </div>
-            <p class="access-toggle-info-text">
-              Enable Screen Reader Mode to activate additional ARIA labels and announce page changes.
-            </p>
-
-            <div class="mt-3">
-              <div class="fw-semibold mb-1" style="font-size:0.86rem;">Compatible Screen Readers:</div>
-              <ul class="mb-0" style="font-size:0.82rem; color:#4b5563;">
-                <li>JAWS (Job Access With Speech)</li>
-                <li>NVDA (NonVisual Desktop Access)</li>
-                <li>VoiceOver (macOS and iOS)</li>
-                <li>TalkBack (Android)</li>
-                <li>Narrator (Windows)</li>
-              </ul>
-            </div>
-          </div>
-          <div class="toggle-switch" aria-hidden="true">
-            <div class="toggle-knob"></div>
-          </div>
+        <div class="toggle-switch" aria-hidden="true">
+          <div class="toggle-knob"></div>
         </div>
+
       </div>
+    </div>
 
+    <!-- Card 2 -->
+    <div class="col-12 col-lg-6">
+
+      <div class="access-toggle-card h-100">
+
+        <div>
+          <div class="access-card-header mb-2">
+            <div class="access-card-icon"><i class="bi bi-volume-up"></i></div>
+
+            <div>
+              <div class="access-card-title">Screen Reader Support</div>
+              <p class="access-card-text mb-0">
+                Enhanced support for screen readers and assistive technologies.
+              </p>
+            </div>
+          </div>
+
+          <p class="access-toggle-info-text">
+            Enable Screen Reader Mode to activate additional ARIA labels and announce page changes.
+          </p>
+
+          <div class="mt-3">
+            <div class="fw-semibold mb-1" style="font-size:0.86rem;">
+              Compatible Screen Readers:
+            </div>
+
+            <ul class="mb-0" style="font-size:0.82rem; color:#4b5563;">
+              <li>JAWS (Job Access With Speech)</li>
+              <li>NVDA (NonVisual Desktop Access)</li>
+              <li>VoiceOver (macOS and iOS)</li>
+              <li>TalkBack (Android)</li>
+              <li>Narrator (Windows)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="toggle-switch" aria-hidden="true">
+          <div class="toggle-knob"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
       <!-- Assistance card -->
       <div class="access-assist-card">
         <div class="access-assist-title">Need Accessibility Assistance?</div>
@@ -233,14 +297,40 @@
       </div>
       <div>
         <h4>Contact Us</h4>
-        <div class="contact-item"><i class="bi bi-geo-alt"></i> Cairo, Egypt</div>
-        <div class="contact-item"><i class="bi bi-telephone"></i> +20 123 456 789</div>
-        <div class="contact-item"><i class="bi bi-envelope"></i> library@eelu.edu.eg</div>
-        <div class="social-icons">
-          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-          <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-        </div>
+            <div class="contact-item">
+  <i class="bi bi-geo-alt"></i>
+  <a href="https://www.google.com/maps?q=Cairo,Egypt" target="_blank">
+    Cairo, Egypt
+  </a>
+</div>
+
+<div class="contact-item">
+  <i class="bi bi-telephone"></i>
+  <a href="tel:+20123456789">
+    +20 123 456 789
+  </a>
+</div>
+
+<div class="contact-item">
+  <i class="bi bi-envelope"></i>
+  <a href="mailto:library@eelu.edu.eg">
+    library@eelu.edu.eg
+  </a>
+</div>
+
+<div class="social-icons">
+  <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+    <i class="bi bi-facebook"></i>
+  </a>
+
+  <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+    <i class="bi bi-twitter-x"></i>
+  </a>
+
+  <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+    <i class="bi bi-linkedin"></i>
+  </a>
+</div>
       </div>
     </div>
     <div class="footer-copy">

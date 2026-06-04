@@ -54,27 +54,73 @@
   </section>
 
   <!-- Welcome banner -->
-  <section class="welcome-banner">
+  <section class="welcome-banner mt-3 mb-4">
     <h2 class="welcome-title">Welcome back, Ahmed Hassan!</h2>
     <p class="welcome-text">You are registered as a student in the Information Technology faculty, Year 2.</p>
   </section>
 
   <!-- Main content: Dashboard + About + Stats + Footer -->
   <div class="content-wrap">
-    <!-- Top browse cards -->
-    <div class="browse-cards">
-      <div class="browse-card">
-        <div class="browse-topic">• Strategic Management</div>
-        <button type="button" class="btn-browse" id="browseBA">Browse BA Books</button>
+  <div class="container-fluid px-5">
+
+
+<!-- About: Our Mission + Inclusive Education -->
+<h2 class="section-title">About EELU Library Hub</h2>
+
+<div class="about-grid">
+  <div class="about-card">
+    <div class="about-head">
+      <i class="bi bi-book"></i> Our Mission
+    </div>
+    <p class="about-body">
+      The EELU Library Hub is dedicated to providing comprehensive academic resources for students and faculty of the Egyptian E-Learning University. We serve the Business Administration (BA) and Information Technology (IT) faculties with books, journals, and digital resources to support learning and research.
+    </p>
+  </div>
+
+  <div class="about-card">
+    <div class="about-head">
+      <i class="bi bi-people"></i> Inclusive Education
+    </div>
+    <p class="about-body">
+      We are committed to supporting all students, including those with special needs. Our platform offers accessibility features such as screen reader support, adjustable text sizes, high contrast modes, and access to braille materials and audio books.
+    </p>
+  </div>
+</div>
+
+    <!-- Our Faculties -->
+    <h2 class="section-title faculties-title">Our Faculties</h2>
+    <div class="faculties-grid">
+      <div class="faculty-card">
+        <div class="faculty-name">Business Administration (BA)</div>
+        <div class="faculty-sub">Academic Resources & References</div>
+        <ul>
+          <li>Marketing and Management</li>
+          <li>Accounting and Finance</li>
+          <li>Human Resources</li>
+          <li>Entrepreneurship</li>
+          <li>International Business</li>
+          <li>Strategic Management</li>
+        </ul>
+        <button type="button" class="btn-browse" data-faculty="BA">Browse BA Books</button>
       </div>
-      <div class="browse-card">
-        <div class="browse-topic">• Cloud Computing</div>
-        <button type="button" class="btn-browse" id="browseIT">Browse IT Books</button>
+      <div class="faculty-card">
+        <div class="faculty-name">Information Technology (IT)</div>
+        <div class="faculty-sub">Academic Resources & References</div>
+        <ul>
+          <li>Programming and Software Development</li>
+          <li>Database Systems</li>
+          <li>Computer Networks</li>
+          <li>Artificial Intelligence</li>
+          <li>Cybersecurity</li>
+          <li>Cloud Computing</li>
+        </ul>
+        <button type="button" class="btn-browse" data-faculty="IT">Browse IT Books</button>
       </div>
     </div>
 
+    
     <!-- Quick Access -->
-    <h2 class="section-title">Quick Access</h2>
+    <h2 class="section-title mt-4">Quick Access</h2>
     <div class="quick-access-grid">
       <div class="qa-card">
         <div class="qa-icon"><i class="bi bi-search"></i></div>
@@ -118,56 +164,11 @@
       </div>
     </div>
 
-    <!-- About: Our Mission + Inclusive Education -->
-    <div class="about-grid">
-      <div class="about-card">
-        <div class="about-head"><i class="bi bi-book"></i> Our Mission</div>
-        <p class="about-body">
-          The EELU Library Hub is dedicated to providing comprehensive academic resources for students and faculty of the Egyptian E-Learning University. We serve the Business Administration (BA) and Information Technology (IT) faculties with books, journals, and digital resources to support learning and research.
-        </p>
-      </div>
-      <div class="about-card">
-        <div class="about-head"><i class="bi bi-people"></i> Inclusive Education</div>
-        <p class="about-body">
-          We are committed to supporting all students, including those with special needs. Our platform offers accessibility features such as screen reader support, adjustable text sizes, high contrast modes, and access to braille materials and audio books.
-        </p>
-      </div>
-    </div>
-
-    <!-- Our Faculties -->
-    <h2 class="section-title faculties-title">Our Faculties</h2>
-    <div class="faculties-grid">
-      <div class="faculty-card">
-        <div class="faculty-name">Business Administration (BA)</div>
-        <div class="faculty-sub">Academic Resources & References</div>
-        <ul>
-          <li>Marketing and Management</li>
-          <li>Accounting and Finance</li>
-          <li>Human Resources</li>
-          <li>Entrepreneurship</li>
-          <li>International Business</li>
-          <li>Strategic Management</li>
-        </ul>
-        <button type="button" class="btn-browse" data-faculty="BA">Browse BA Books</button>
-      </div>
-      <div class="faculty-card">
-        <div class="faculty-name">Information Technology (IT)</div>
-        <div class="faculty-sub">Academic Resources & References</div>
-        <ul>
-          <li>Programming and Software Development</li>
-          <li>Database Systems</li>
-          <li>Computer Networks</li>
-          <li>Artificial Intelligence</li>
-          <li>Cybersecurity</li>
-          <li>Cloud Computing</li>
-        </ul>
-        <button type="button" class="btn-browse" data-faculty="IT">Browse IT Books</button>
-      </div>
-    </div>
+ 
   </div>
 
   <!-- Library Statistics -->
-  <section class="stats-section">
+  <section class="stats-section ">
     <h2 class="stats-heading">Library Statistics</h2>
     <div class="stats-grid">
       <div class="stat-card">
@@ -189,6 +190,7 @@
     </div>
   </section>
 
+  </div>
 
   <!-- Footer -->
   <footer class="main-footer" id="contact">
@@ -209,14 +211,40 @@
       </div>
       <div>
         <h4>Contact Us</h4>
-        <div class="contact-item"><i class="bi bi-geo-alt"></i> Cairo, Egypt</div>
-        <div class="contact-item"><i class="bi bi-telephone"></i> +20 123 456 789</div>
-        <div class="contact-item"><i class="bi bi-envelope"></i> library@eelu.edu.eg</div>
-        <div class="social-icons">
-          <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
-          <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
-          <a href="#" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-        </div>
+              <div class="contact-item">
+  <i class="bi bi-geo-alt"></i>
+  <a href="https://www.google.com/maps?q=Cairo,Egypt" target="_blank">
+    Cairo, Egypt
+  </a>
+</div>
+
+<div class="contact-item">
+  <i class="bi bi-telephone"></i>
+  <a href="tel:+20123456789">
+    +20 123 456 789
+  </a>
+</div>
+
+<div class="contact-item">
+  <i class="bi bi-envelope"></i>
+  <a href="mailto:library@eelu.edu.eg">
+    library@eelu.edu.eg
+  </a>
+</div>
+
+<div class="social-icons">
+  <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+    <i class="bi bi-facebook"></i>
+  </a>
+
+  <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+    <i class="bi bi-twitter-x"></i>
+  </a>
+
+  <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+    <i class="bi bi-linkedin"></i>
+  </a>
+</div>
       </div>
     </div>
     <div class="footer-copy">
