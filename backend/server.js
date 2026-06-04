@@ -1,33 +1,50 @@
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
-require("dotenv").config();
+const helmet = require("helmet");
+const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, ".env") });
+const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 
 const app = express();
 
-// middleware
-app.use(cors());
-app.use(express.json());
+app.disable("x-powered-by");
 
-// connect DB
+app.use(helmet());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",") : true,
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+
 connectDB();
 
-// routes
-const authRoutes = require("./routes/auth");
-const bookRoutes = require("./routes/books");
-const borrowedRoutes = require("./routes/borrowed");
+const authRoutes = require("./routes/authRoutes");
+const bookRoutes = require("./routes/bookRoutes");
+const borrowedRoutes = require("./routes/borrowRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const contactRoutes = require("./routes/contactRoutes");
+
 app.use("/api/auth", authRoutes);
 app.use("/api/books", bookRoutes);
 app.use("/api/borrowed", borrowedRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/contact", contactRoutes);
 
-// test route
 app.get("/", (req, res) => {
-  res.send("API Running...");
+  res.json({
+    success: true,
+    message: "API Running...",
+  });
 });
 
+app.use(notFound);
+app.use(errorHandler);
 
-
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

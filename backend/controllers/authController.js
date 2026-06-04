@@ -1,97 +1,179 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const generateToken = require("../utils/generateToken");
+const { validateRegister, validateLogin } = require("../middleware/validators");
 
-// ================= REGISTER =================
 const register = async (req, res) => {
   try {
-    const { fullName, email, password, faculty, academicYear } = req.body;
+    const payload = validateRegister(req.body);
+
+    if (!payload.ok) {
+      return res.status(400).json({
+        success: false,
+        message: payload.errors[0],
+        errors: payload.errors,
+      });
+    }
+
+    const { fullName, email, password, faculty, academicYear } = payload.data;
 
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "User already exists"
+        message: "User already exists",
       });
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
       fullName,
       email,
-      password: hashedPassword,
+      password,
       faculty,
-      academicYear
+      academicYear,
+      role: "student",
     });
 
     await newUser.save();
 
-    res.json({
+    return res.status(201).json({
       success: true,
-      message: "User registered successfully"
+      message: "User registered successfully",
     });
 
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };
 
-// ================= LOGIN =================
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const payload = validateLogin(req.body);
 
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.json({
+    if (!payload.ok) {
+      return res.status(400).json({
         success: false,
-        message: "Invalid credentials"
+        message: payload.errors[0],
+        errors: payload.errors,
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const { email, password } = payload.data;
+
+    const user = await User.findOne({ email }).select("+password");
+
+    if (!user || !user.isActive) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+    const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
-      return res.json({
+      return res.status(401).json({
         success: false,
-        message: "Invalid credentials"
+        message: "Invalid credentials",
       });
     }
 
-    const token = jwt.sign(
-      { id: user._id.toString()},
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const token = generateToken(user);
 
-    res.json({
+    return res.json({
       success: true,
       message: "Login successful",
       token,
       user: {
-        id: user._id,   
+        id: user._id,
         fullName: user.fullName,
         email: user.email,
         faculty: user.faculty,
-        academicYear: user.academicYear
-      }
+        academicYear: user.academicYear,
+        role: user.role,
+      },
     });
 
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
+  }
+};
+
+const getMe = async (req, res) => {
+  return res.json({
+    success: true,
+    user: req.user,
+  });
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    if (req.body.fullName !== undefined) user.fullName = String(req.body.fullName).trim();
+    if (req.body.faculty !== undefined) user.faculty = req.body.faculty;
+    if (req.body.academicYear !== undefined) user.academicYear = req.body.academicYear;
+
+    await user.save();
+
+    return res.json({
+      success: true,
+      message: "Profile updated successfully",
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "currentPassword and newPassword are required",
+      });
+    }
+
+    const user = await User.findById(req.user._id).select("+password");
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Current password is incorrect" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return res.json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 module.exports = {
   register,
-  login
+  login,
+  getMe,
+  updateProfile,
+  changePassword,
 };
