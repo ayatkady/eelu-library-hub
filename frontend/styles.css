@@ -206,14 +206,24 @@ body {
 }
 
 .combined-page .main-header {
-  background: #173c6b;
+  background: #14345e;
   color: #fff;
-  padding: 0.75rem 1.5rem;
+
+  width: 100%;
+  padding: 1rem 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 1rem;
+}
+.combined-page .header-container {
+  width: 85%;
+  max-width: 1300px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 2rem;
 }
 
 .combined-page .main-header .brand {
@@ -236,10 +246,13 @@ body {
 .combined-page .main-header .brand-title { font-weight: 700; font-size: 1.1rem; }
 .combined-page .main-header .brand-sub { font-size: 0.75rem; opacity: 0.9; }
 
-.combined-page .main-header .nav-links {
+.combined-page .nav-links {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+
+  flex: 1;
+  justify-content: center;
 }
 
 .combined-page .main-header .nav-links a {
@@ -273,18 +286,18 @@ body {
 .combined-page .main-header .user-meta { font-size: 0.75rem; opacity: 0.9; }
 
 .combined-page .btn-logout {
-  background: #3e6293;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
+  background-color: #173c6b;
+  color: #ffffff;
+  border: 1px solid #fff;
+  padding: 0.75rem 1.5rem ;
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   gap: 0.35rem;
 }
 
-.combined-page .btn-logout:hover { background: #4a6fa0; color: #fff; }
+.combined-page .btn-logout:hover { background: #ffffff; color: #163253; }
 
 .combined-page .hero-section {
   background:
@@ -301,13 +314,17 @@ body {
 
   color: #fff;
   padding: 4rem 1.5rem;
-  text-align: center;
+  text-align: left;
   height: 60vh;
 }
 
-.combined-page .hero-section h1 { font-size: 2.25rem; font-weight: 700; margin-bottom: 0.5rem; }
-.combined-page .hero-section .hero-sub { font-size: 1rem; opacity: 0.95; margin-bottom: 1rem; }
-.combined-page .hero-section .hero-desc { max-width: 640px; margin: 0 auto 1.5rem; font-size: 0.95rem; line-height: 1.5; }
+.combined-page .hero-content {
+  max-width: 700px;
+  margin-left: 32%;
+}
+.combined-page .hero-section h1 { font-size: 3rem; font-weight: 700; margin-bottom: 0.5rem; margin-top: 100px; }
+.combined-page .hero-section .hero-sub { font-size: 1.2rem; opacity: 0.95; margin-bottom: 1rem; }
+.combined-page .hero-section .hero-desc { max-width: 640px; margin: 0 auto 1.5rem; font-size: 1.2rem; line-height: 1.5; }
 .combined-page .hero-search {
   display: flex;
   align-items: center;
