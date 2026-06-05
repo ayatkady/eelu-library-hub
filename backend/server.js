@@ -34,6 +34,9 @@ app.use("/api/borrowed", borrowedRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/contact", contactRoutes);
 
+// Serve dashboard static files
+app.use('/dashboard', express.static(path.join(__dirname, '..', 'dashboard')));
+
 app.get("/", (req, res) => {
   res.json({
     success: true,
