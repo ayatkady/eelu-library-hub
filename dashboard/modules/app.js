@@ -1,8 +1,8 @@
 import { api } from './api.js';
 import { renderDashboard } from './pages/dashboard.js';
-import { renderBooksPage } from './pages/books.js';
-import { renderMembersPage } from './pages/members.js';
-import { renderLoansPage } from './pages/loans.js';
+import { renderBooksPage, loadBooks } from './pages/books.js';
+import { renderMembersPage, loadMembers } from './pages/members.js';
+import { renderLoansPage, loadLoans } from './pages/loans.js';
 import { renderLogin } from './pages/login.js';
 import { setupTheme, setSidebarUser, logout } from './utils.js';
 
@@ -78,7 +78,7 @@ export function initApp() {
       const u = JSON.parse(localStorage.getItem('adminUser') || 'null');
       setSidebarUser(u);
     } catch (_) { setSidebarUser(null); }
-    renderDashboard();
+    loadAllData();
   }
 
   // After login
@@ -88,7 +88,7 @@ export function initApp() {
       const u = JSON.parse(localStorage.getItem('adminUser') || 'null');
       setSidebarUser(u);
     } catch (_) { setSidebarUser(null); }
-    renderDashboard();
+    loadAllData();
   });
 
   // Token expired
@@ -108,4 +108,12 @@ export function initApp() {
   const overlayEl     = document.getElementById('sidebarOverlay');
   menuBtn?.addEventListener('click', () => sidebarEl?.classList.toggle('open'));
   overlayEl?.addEventListener('click', () => sidebarEl?.classList.remove('open'));
+}
+
+// Load all data — only called when token is confirmed valid
+function loadAllData() {
+  renderDashboard();
+  loadBooks();
+  loadLoans();
+  loadMembers();
 }

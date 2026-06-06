@@ -338,7 +338,7 @@ export function renderBooksPage() {
   // Table actions
   document.getElementById('booksTable')?.addEventListener('click', handleTableClick);
 
-  loadBooks();
+  // ⚠️ loadBooks() is NOT called here — app.js calls it after auth is confirmed
 }
 
 // Re-export so app.js can call reload after login

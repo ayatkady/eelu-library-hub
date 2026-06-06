@@ -216,7 +216,7 @@ export function renderLoansPage() {
   document.getElementById('refreshLoansBtn')?.addEventListener('click', loadLoans);
   document.getElementById('allLoansTable')?.addEventListener('click', handleTableClick);
 
-  loadLoans();
+  // ⚠️ loadLoans() is NOT called here — app.js calls it after auth is confirmed
 }
 
 export { loadLoans };

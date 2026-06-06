@@ -199,7 +199,7 @@ export function renderMembersPage() {
   document.getElementById('refreshMembersBtn')?.addEventListener('click', loadMembers);
   document.getElementById('membersGrid')?.addEventListener('click', handleGridClick);
 
-  loadMembers();
+  // ⚠️ loadMembers() is NOT called here — app.js calls it after auth is confirmed
 }
 
 export { loadMembers };
