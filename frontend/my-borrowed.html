@@ -59,7 +59,7 @@
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
               <div class="text-muted">Total Borrowed</div>
-              <h2 class="fw-bold mb-0">2</h2>
+              <h2 class="fw-bold mb-0 totalBorrowedCount">—</h2>
             </div>
             <i class="bi bi-book text-primary fs-1"></i>
           </div>
@@ -71,7 +71,7 @@
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
               <div class="text-muted">Reserved</div>
-              <h2 class="fw-bold mb-0">0</h2>
+              <h2 class="fw-bold mb-0 totalReservedCount">—</h2>
             </div>
             <i class="bi bi-bookmark text-primary fs-1"></i>
           </div>
@@ -82,8 +82,8 @@
         <div class="card border-0 shadow-sm h-100">
           <div class="card-body d-flex justify-content-between align-items-center">
             <div>
-              <div class="text-muted">Due Soon</div>
-              <h2 class="fw-bold text-warning mb-0">0</h2>
+              <div class="text-muted">Due Soon / Overdue</div>
+              <h2 class="fw-bold text-warning mb-0 totalDueSoonCount">—</h2>
             </div>
             <i class="bi bi-exclamation-circle text-warning fs-1"></i>
           </div>
@@ -93,160 +93,19 @@
     </div>
 
     <!-- Borrowed Books -->
-    <h2 class="fw-bold borrowed-heading mb-4">
-      Currently Borrowed (2)
+    <h2 class="fw-bold borrowed-heading mb-4 currentlyBorrowedTitle">
+      Currently Borrowed
     </h2>
 
-    <div class="row g-4">
+    <div class="row g-4" id="borrowedContainer">
+      <!-- filled by my-borrowed.js -->
+    </div>
 
-      <!-- Book Card -->
-      <div class="col-lg-6">
-        <div class="card h-100 border rounded-4 shadow-sm">
-
-          <div class="card-body">
-
-            <div class="d-flex">
-
-              <img src="images/book1.jpg"
-                   alt="Book"
-                   class="rounded"
-                   width="95"
-                   height="130">
-
-              <div class="ms-3 flex-grow-1">
-
-                <div class="d-flex justify-content-between">
-                  <h4 class="fw-semibold">
-                    Database Systems: Design and Implementation
-                  </h4>
-
-                  <span class="badge bg-success align-self-start">
-                    Active
-                  </span>
-                </div>
-
-                <p class="text-secondary mb-2">
-                  by Hector Garcia-Molina
-                </p>
-
-                <span class="badge text-dark border">
-                  IT - Year 1
-                </span>
-
-                <div class="mt-4">
-
-                  <p class="mb-2">
-                    <i class="bi bi-calendar-event me-2"></i>
-                    Borrowed: Jun 01, 2026
-                  </p>
-
-                  <p class="mb-0">
-                    <i class="bi bi-clock me-2"></i>
-                    Due: Jun 15, 2026 (12 days remaining)
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="row mt-4 g-2">
-
-              <div class="col-6">
-                <button class="btn btn-outline-secondary w-100">
-                  <i class="bi bi-check-circle me-2"></i>
-                  Return Book
-                </button>
-              </div>
-
-              <div class="col-6">
-                <button class="btn btn-outline-secondary w-100">
-                  View Details
-                </button>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Book Card -->
-      <div class="col-lg-6">
-        <div class="card h-100 border rounded-4 shadow-sm">
-
-          <div class="card-body">
-
-            <div class="d-flex">
-
-              <img src="images/book2.jpg"
-                   alt="Book"
-                   class="rounded"
-                   width="95"
-                   height="130">
-
-              <div class="ms-3 flex-grow-1">
-
-                <div class="d-flex justify-content-between">
-                  <h4 class="fw-semibold">
-                    Cloud Computing: Concepts, Technology & Architecture
-                  </h4>
-
-                  <span class="badge bg-success align-self-start">
-                    Active
-                  </span>
-                </div>
-
-                <p class="text-secondary mb-2">
-                  by Thomas Erl
-                </p>
-
-                <span class="badge text-dark border">
-                  IT - Year 4
-                </span>
-
-                <div class="mt-4">
-
-                  <p class="mb-2">
-                    <i class="bi bi-calendar-event me-2"></i>
-                    Borrowed: Jun 01, 2026
-                  </p>
-
-                  <p class="mb-0">
-                    <i class="bi bi-clock me-2"></i>
-                    Due: Jun 15, 2026 (12 days remaining)
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-            <div class="row mt-4 g-2">
-
-              <div class="col-6">
-                <button class="btn btn-outline-secondary w-100">
-                  <i class="bi bi-check-circle me-2"></i>
-                  Return Book
-                </button>
-              </div>
-
-              <div class="col-6">
-                <button class="btn btn-outline-secondary w-100">
-                  View Details
-                </button>
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
+    <!-- Empty state (hidden by default) -->
+    <div id="borrowedEmpty" style="display:none" class="text-center py-5">
+      <i class="bi bi-journal-bookmark fs-1 text-muted"></i>
+      <p class="mt-3 text-muted">You haven't borrowed any books yet.</p>
+      <a href="search.html" class="btn btn-primary borrowed-browse-btn">Browse Books</a>
     </div>
 
     <!-- Borrowing Information -->

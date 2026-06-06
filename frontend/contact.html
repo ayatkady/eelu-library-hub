@@ -324,6 +324,13 @@
     </div>
   </footer>
 
+  <script>
+    // Populate header user info from localStorage
+    const _n = document.querySelector(".user-name");
+    const _m = document.querySelector(".user-meta");
+    if (_n) _n.textContent = localStorage.getItem("userName") || "Student";
+    if (_m) _m.textContent = `${localStorage.getItem("faculty")||"IT"} - ${localStorage.getItem("academicYear")||"Year 1"}`;
+  </script>
   <script src="contact.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <div class="toast-container position-fixed top-0 end-0 p-3">

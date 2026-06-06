@@ -1,42 +1,59 @@
+const API = "http://localhost:3000/api";
 
-const token = localStorage.getItem("token");
-if (!token) {
+// ── Auth guard ────────────────────────────────────────────────────
+if (!localStorage.getItem("token")) {
   window.location.href = "login.html";
 }
-// ================= USER =================
-const currentUser =
-JSON.parse(
-  localStorage.getItem("currentUser")
-);
 
-const studentName =
-currentUser?.fullName || "Student";
+// ── User info ─────────────────────────────────────────────────────
+const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+const userName    = currentUser.fullName || localStorage.getItem("userName") || "Student";
+const faculty     = currentUser.faculty  || localStorage.getItem("faculty")  || "IT";
+const year        = currentUser.academicYear || localStorage.getItem("academicYear") || "Year 1";
 
-const faculty =
-currentUser?.faculty || "IT";
+document.getElementById("studentName").textContent = userName;
+document.getElementById("studentInfo").textContent = `${faculty} · ${year}`;
 
-const academicYear =
-currentUser?.academicYear || "Year 1";
+// Welcome banner
+const welcomeNameEl = document.getElementById("welcomeName");
+const welcomeInfoEl = document.getElementById("welcomeInfo");
+if (welcomeNameEl) welcomeNameEl.textContent = userName;
+if (welcomeInfoEl) welcomeInfoEl.textContent =
+  `You are registered as a student in the ${faculty === "IT" ? "Information Technology" : "Business Administration"} Faculty, ${year}.`;
 
-document.getElementById("studentName").textContent = studentName;
-document.getElementById("studentInfo").textContent = `${faculty} - ${academicYear}`;
-
-// ================= LOGOUT =================
+// ── Logout ────────────────────────────────────────────────────────
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
   localStorage.clear();
   window.location.href = "login.html";
 });
 
-// ================= HERO SEARCH =================
-document.querySelector(".btn-search")?.addEventListener("click", () => {
-  const input = document.querySelector(".hero-input").value.trim();
-  window.location.href = `search.html?q=${encodeURIComponent(input)}`;
+// ── Hero search button ────────────────────────────────────────────
+document.getElementById("heroSearchBtn")?.addEventListener("click", () => {
+  window.location.href = "search.html";
 });
 
-// ================= FACULTY BUTTONS =================
-document.querySelectorAll(".btn-browse").forEach(btn => {
+// ── Faculty browse buttons ────────────────────────────────────────
+document.querySelectorAll(".btn-browse").forEach((btn) => {
   btn.addEventListener("click", () => {
-    const faculty = btn.dataset.faculty;
-    window.location.href = `search.html?faculty=${faculty}`;
+    window.location.href = `search.html?faculty=${btn.dataset.faculty}`;
   });
 });
+
+// ── Live stats from API ───────────────────────────────────────────
+async function loadStats() {
+  try {
+    const token = localStorage.getItem("token");
+    const res   = await fetch(`${API}/books`, {
+      headers: { "Authorization": `Bearer ${token}` },
+    });
+    const data  = await res.json();
+    if (data.success && data.total != null) {
+      const el = document.getElementById("statBooks");
+      if (el) el.textContent = data.total.toLocaleString() + "+";
+    }
+  } catch (_) {
+    // keep static fallback
+  }
+}
+
+loadStats();

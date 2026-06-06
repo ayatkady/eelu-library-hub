@@ -1,194 +1,210 @@
-// Check if user is logged in
+const API = "http://localhost:3000/api";
+
+// ── Auth guard ────────────────────────────────────────────────────
 if (!localStorage.getItem("token")) {
   window.location.href = "login.html";
 }
 
-// Header user data
-const studentName = localStorage.getItem("userName") || "Student";
-const faculty = localStorage.getItem("faculty") || "IT";
-const academicYear = localStorage.getItem("academicYear") || "Year 1";
+// ── Header user info ──────────────────────────────────────────────
+const nameEl = document.querySelector(".user-name");
+const metaEl = document.querySelector(".user-meta");
+if (nameEl) nameEl.textContent = localStorage.getItem("userName") || "Student";
+if (metaEl) metaEl.textContent = `${localStorage.getItem("faculty") || "IT"} - ${localStorage.getItem("academicYear") || "Year 1"}`;
 
-document.querySelector(".user-name").textContent = studentName;
-document.querySelector(".user-meta").textContent =
-`${faculty} - ${academicYear}`;
-
-
-// Logout
-const logoutBtn = document.querySelector(".btn-logout");
-
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", function () {
-    localStorage.clear();
-    window.location.href = "login.html";
-  });
-}
-
-
-// Buttons
-document.querySelector(".book-detail-main-btn")
-?.addEventListener("click", function () {
-  alert("Book borrowed successfully!");
+// ── Logout ────────────────────────────────────────────────────────
+document.querySelector(".btn-logout")?.addEventListener("click", () => {
+  localStorage.clear();
+  window.location.href = "login.html";
 });
 
-document.querySelector(".book-detail-secondary-btn")
-?.addEventListener("click", function () {
-  alert("Book reserved successfully!");
-});
-
-document.querySelector(".book-detail-download-btn")
-?.addEventListener("click", function () {
-  alert("PDF download started!");
-});
-
-
-// Back button
-document.querySelector(".book-detail-back-link")
-?.addEventListener("click", function (e) {
+// ── Back button ───────────────────────────────────────────────────
+document.querySelector(".book-detail-back-link")?.addEventListener("click", (e) => {
   e.preventDefault();
   window.location.href = "search.html";
 });
 
+// ── Get book ID from URL ──────────────────────────────────────────
+const bookId = new URLSearchParams(window.location.search).get("id");
 
-// ================= BOOK DATA =================
-
-const books = {
-
-1:{
-title:"Data Structures and Algorithms in Java",
-author:"Robert Lafore",
-category:"Computer Science",
-faculty:"IT",
-year:"Year 2",
-description:"Learn data structures and algorithms using Java.",
-availability:"12 of 20 copies available",
-image:"https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg?auto=compress&cs=tinysrgb&w=800"
-},
-
-2:{
-title:"Web Development with HTML, CSS, and JavaScript",
-author:"Jon Duckett",
-category:"Web Development",
-faculty:"IT",
-year:"Year 2",
-description:"Learn HTML CSS and JavaScript development.",
-availability:"10 of 18 copies available",
-image:"https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800"
-},
-
-3:{
-title:"Artificial Intelligence: A Modern Approach",
-author:"Stuart Russell & Peter Norvig",
-category:"Computer Science",
-faculty:"IT",
-year:"Year 3",
-description:"Modern concepts of Artificial Intelligence.",
-availability:"7 of 15 copies available",
-image:"https://images.pexels.com/photos/1181273/pexels-photo-1181273.jpeg?auto=compress&cs=tinysrgb&w=800"
-},
-4:{
-title:"Software Engineering: A Practitioner's Approach",
-author:"Roger Pressman",
-category:"Software Engineering",
-faculty:"IT",
-year:"Year 3",
-description:"Software engineering principles, design models, testing and maintenance.",
-availability:"6 of 14 copies available",
-image:"https://images.pexels.com/photos/3861972/pexels-photo-3861972.jpeg?auto=compress&cs=tinysrgb&w=800"
-},
-
-5:{
-title:"Cloud Computing Concepts & Architecture",
-author:"Thomas Erl",
-category:"Cloud Computing",
-faculty:"IT",
-year:"Year 4",
-description:"Concepts of cloud computing architecture and distributed services.",
-availability:"6 of 10 copies available",
-image:"https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=800"
-},
-
-6:{
-title:"Cybersecurity Essentials",
-author:"Charles J. Brooks",
-category:"Cybersecurity",
-faculty:"IT",
-year:"Year 4",
-description:"Cybersecurity concepts, threats, risk management and protection.",
-availability:"5 of 12 copies available",
-image:"https://images.pexels.com/photos/5380651/pexels-photo-5380651.jpeg?auto=compress&cs=tinysrgb&w=800"
-},
-
-7:{
-title:"Principles of Marketing",
-author:"Philip Kotler & Gary Armstrong",
-category:"Marketing",
-faculty:"BA",
-year:"Year 1",
-description:"Marketing fundamentals, strategy, branding and customer behavior.",
-availability:"15 of 25 copies available",
-image:"https://images.pexels.com/photos/669610/pexels-photo-669610.jpeg?auto=compress&cs=tinysrgb&w=800"
-},
-
-8:{
-title:"Introduction to Business",
-author:"Jeff Madura",
-category:"Business Administration",
-faculty:"BA",
-year:"Year 1",
-description:"Introduction to business concepts, management and entrepreneurship.",
-availability:"11 of 20 copies available",
-
-image:"https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800"
-},
-
-9:{
-title:"Financial Accounting",
-author:"Jerry J. Weygandt",
-category:"Accounting",
-faculty:"BA",
-year:"Year 2",
-description:"Accounting principles, financial statements and reporting.",
-availability:"13 of 22 copies available",
-image:"https://images.pexels.com/photos/164686/pexels-photo-164686.jpeg?auto=compress&cs=tinysrgb&w=800"
+if (!bookId) {
+  window.location.href = "search.html";
 }
-};
 
+// ── Fetch and render book ─────────────────────────────────────────
+async function loadBook() {
+  try {
+    const token = localStorage.getItem("token");
+    const res   = await fetch(`${API}/books/${bookId}`, {
+      headers: { "Authorization": `Bearer ${token}` },
+    });
+    const data  = await res.json();
 
-// ================= GET URL ID =================
+    if (!res.ok || !data.success || !data.data) {
+      showError("Book not found.");
+      return;
+    }
 
-const params = new URLSearchParams(window.location.search);
-
-const id = params.get("id");
-
-const book = books[id];
-
-
-// ================= UPDATE PAGE =================
-
-if(book){
-
-document.querySelector(".book-detail-title").textContent =
-book.title;
-
-document.querySelector(".book-detail-author").textContent =
-"by " + book.author;
-
-document.querySelector(".book-detail-badge").textContent =
-book.category;
-
-document.querySelector(".badge-faculty").textContent =
-book.faculty;
-
-document.querySelector(".badge-year").textContent =
-book.year;
-
-document.querySelector(".availability-count").textContent =
-book.availability;
-
-document.querySelector(".book-detail-description p").textContent =
-book.description;
-
-document.querySelector(".book-detail-cover img").src =
-book.image;
-
+    renderBook(data.data);
+  } catch (err) {
+    console.error(err);
+    showError("Failed to load book details.");
+  }
 }
+
+function renderBook(b) {
+  // Cover image
+  const coverImg = document.querySelector(".book-detail-cover img");
+  if (coverImg) {
+    coverImg.src = b.coverImageUrl || "https://placehold.co/300x400?text=No+Cover";
+    coverImg.alt = b.title;
+  }
+
+  // Availability
+  const avail    = b.availableCopies ?? 0;
+  const total    = b.totalCopies     ?? 0;
+  const availBadge = document.querySelector(".badge-availability");
+  const availCount = document.querySelector(".availability-count");
+  if (availBadge) {
+    availBadge.textContent  = avail > 0 ? "Available" : "Not Available";
+    availBadge.style.background = avail > 0 ? "" : "#dc2626";
+  }
+  if (availCount) availCount.textContent = `${avail} of ${total} copies`;
+
+  // Title, author, category
+  const titleEl = document.querySelector(".book-detail-title");
+  const authorEl = document.querySelector(".book-detail-author");
+  const badgeEl  = document.querySelector(".book-detail-badge");
+  if (titleEl)  titleEl.textContent  = b.title;
+  if (authorEl) authorEl.textContent = `by ${b.author}`;
+  if (badgeEl)  badgeEl.textContent  = b.category;
+
+  // Faculty & year badges
+  const facEl  = document.querySelector(".badge-faculty");
+  const yearEl = document.querySelector(".badge-year");
+  if (facEl)  facEl.textContent  = b.faculty;
+  if (yearEl) yearEl.textContent = b.academicYear;
+
+  // Description
+  const descEl = document.querySelector(".book-detail-description p");
+  if (descEl) descEl.textContent = b.description || "No description available.";
+
+  // Info list values
+  const infoItems = document.querySelectorAll(".book-detail-info-list li");
+  infoItems.forEach((li) => {
+    const label = li.querySelector(".label")?.textContent?.toLowerCase() || "";
+    const valEl = li.querySelector(".value");
+    if (!valEl) return;
+    if (label.includes("author"))   valEl.textContent = b.author;
+    if (label.includes("faculty"))  valEl.textContent = `${b.faculty} – ${b.academicYear}`;
+  });
+
+  // PDF download button
+  const dlBtn = document.querySelector(".book-detail-download-btn");
+  if (dlBtn) {
+    if (b.pdfUrl) {
+      dlBtn.onclick = () => window.open(b.pdfUrl, "_blank");
+    } else {
+      dlBtn.disabled    = true;
+      dlBtn.textContent = "PDF not available";
+    }
+  }
+
+  // Borrow button
+  const borrowBtn = document.querySelector(".book-detail-main-btn");
+  if (borrowBtn) {
+    if (avail > 0) {
+      borrowBtn.onclick = () => handleBorrow(b._id, borrowBtn);
+    } else {
+      borrowBtn.disabled    = true;
+      borrowBtn.textContent = "No Copies Available";
+    }
+  }
+
+  // Reserve button
+  const reserveBtn = document.querySelector(".book-detail-secondary-btn");
+  if (reserveBtn) {
+    reserveBtn.onclick = () => handleReserve(b._id, reserveBtn);
+  }
+}
+
+// ── Borrow ────────────────────────────────────────────────────────
+async function handleBorrow(id, btn) {
+  const token = localStorage.getItem("token");
+  btn.disabled = true;
+  btn.textContent = "Processing…";
+  try {
+    const res  = await fetch(`${API}/borrowed`, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+      body:    JSON.stringify({ bookId: id }),
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast("Book borrowed successfully!", "success");
+      btn.textContent = "Borrowed ✓";
+    } else {
+      showToast(data.message || "Could not borrow book.", "danger");
+      btn.disabled    = false;
+      btn.textContent = "Borrow Book (14 days)";
+    }
+  } catch (err) {
+    showToast("Server error.", "danger");
+    btn.disabled    = false;
+    btn.textContent = "Borrow Book (14 days)";
+  }
+}
+
+// ── Reserve ───────────────────────────────────────────────────────
+async function handleReserve(id, btn) {
+  const token = localStorage.getItem("token");
+  btn.disabled = true;
+  btn.textContent = "Processing…";
+  try {
+    const res  = await fetch(`${API}/borrowed/reserve`, {
+      method:  "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+      body:    JSON.stringify({ bookId: id }),
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast("Book reserved successfully!", "success");
+      btn.textContent = "Reserved ✓";
+    } else {
+      showToast(data.message || "Could not reserve book.", "danger");
+      btn.disabled    = false;
+      btn.textContent = "Reserve Book (3 days)";
+    }
+  } catch (err) {
+    showToast("Server error.", "danger");
+    btn.disabled    = false;
+    btn.textContent = "Reserve Book (3 days)";
+  }
+}
+
+// ── Toast ─────────────────────────────────────────────────────────
+function showToast(msg, type = "success") {
+  let t = document.getElementById("bookToast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id        = "bookToast";
+    t.className = "position-fixed bottom-0 end-0 p-3";
+    t.style.zIndex = "9999";
+    document.body.appendChild(t);
+  }
+  t.innerHTML = `
+    <div class="toast show text-bg-${type} border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">${msg}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.closest('.toast').remove()"></button>
+      </div>
+    </div>`;
+  setTimeout(() => { t.innerHTML = ""; }, 4000);
+}
+
+function showError(msg) {
+  const main = document.querySelector(".book-detail-right") || document.querySelector(".book-detail-section");
+  if (main) main.innerHTML = `<div class="alert alert-danger m-4">${msg} <a href="search.html">Back to search</a></div>`;
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+loadBook();

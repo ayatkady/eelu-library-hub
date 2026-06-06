@@ -56,16 +56,21 @@
         <div class="access-current-grid">
           <div>
             <div class="access-current-item-label">Font Size</div>
-            <div class="access-current-item-value">100%</div>
+            <div class="access-current-item-value" id="settingFontSize">100%</div>
           </div>
           <div>
             <div class="access-current-item-label">High Contrast</div>
-            <div class="access-current-item-value access-current-item-value--off">OFF</div>
+            <div class="access-current-item-value access-current-item-value--off" id="settingContrast">OFF</div>
           </div>
           <div>
             <div class="access-current-item-label">Screen Reader</div>
-            <div class="access-current-item-value access-current-item-value--off">OFF</div>
+            <div class="access-current-item-value access-current-item-value--off" id="settingScreenReader">OFF</div>
           </div>
+        </div>
+        <div class="text-end mt-3">
+          <button type="button" class="btn btn-outline-secondary btn-sm" id="resetAllBtn">
+            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset All Settings
+          </button>
         </div>
       </div>
 
@@ -81,9 +86,9 @@
           </div>
 
           <div class="access-text-buttons">
-            <button type="button" class="btn btn-outline-secondary btn-sm">Decrease (A-)</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm">Increase (A+)</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm">Reset to Default</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="fontDecBtn">Decrease (A-)</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="fontIncBtn">Increase (A+)</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="fontResetBtn">Reset to Default</button>
           </div>
 
           <div class="access-text-preview">
@@ -207,14 +212,11 @@
           </p>
         </div>
 
-        <div class="toggle-switch" aria-hidden="true">
+        <div class="toggle-switch" id="contrastToggle" role="switch" aria-checked="false"
+          aria-label="Toggle High Contrast Mode" tabindex="0"
+          onkeydown="if(event.key==='Enter'||event.key===' ')this.click()">
           <div class="toggle-knob"></div>
         </div>
-
-      </div>
-    </div>
-
-    <!-- Card 2 -->
     <div class="col-12 col-lg-6">
 
       <div class="access-toggle-card h-100">
@@ -250,7 +252,9 @@
           </div>
         </div>
 
-        <div class="toggle-switch" aria-hidden="true">
+        <div class="toggle-switch" id="screenReaderToggle" role="switch" aria-checked="false"
+          aria-label="Toggle Screen Reader Mode" tabindex="0"
+          onkeydown="if(event.key==='Enter'||event.key===' ')this.click()">
           <div class="toggle-knob"></div>
         </div>
 

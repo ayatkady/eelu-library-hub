@@ -1,225 +1,250 @@
-console.log("MY BORROWED JS LOADED");
-// Check if user is logged in
+const API = "http://localhost:3000/api";
+
+// ── Auth guard ────────────────────────────────────────────────────
 if (!localStorage.getItem("token")) {
   window.location.href = "login.html";
 }
 
-// Update user data in header
-const studentName = localStorage.getItem("userName") || "Student";
-const faculty = localStorage.getItem("faculty") || "IT";
-const academicYear = localStorage.getItem("academicYear") || "Year 1";
+// ── Header user info ──────────────────────────────────────────────
+const nameEl = document.querySelector(".user-name");
+const metaEl = document.querySelector(".user-meta");
+if (nameEl) nameEl.textContent = localStorage.getItem("userName") || "Student";
+if (metaEl) metaEl.textContent = `${localStorage.getItem("faculty") || "IT"} - ${localStorage.getItem("academicYear") || "Year 1"}`;
 
-document.querySelector(".user-name").textContent = studentName;
-document.querySelector(".user-meta").textContent = `${faculty} - ${academicYear}`;
+// ── Logout ────────────────────────────────────────────────────────
+document.querySelector(".btn-logout")?.addEventListener("click", () => {
+  localStorage.clear();
+  window.location.href = "login.html";
+});
 
-// Logout functionality
-const logoutBtn = document.querySelector(".btn-logout");
-if (logoutBtn) {
-  logoutBtn.addEventListener("click", function() {
-    localStorage.clear();
-    window.location.href = "login.html";
-  });
+// ── Browse button ─────────────────────────────────────────────────
+document.querySelector(".borrowed-browse-btn")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.href = "search.html";
+});
+
+// ── Helpers ───────────────────────────────────────────────────────
+function fmtDate(d) {
+  if (!d) return "—";
+  return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
-// Browse books button
-const browseBtn = document.querySelector(".borrowed-browse-btn");
-if (browseBtn) {
-  browseBtn.addEventListener("click", function(e) {
-    e.preventDefault();
-    window.location.href = "search.html";
-  });
+function daysLeft(dueDate) {
+  if (!dueDate) return null;
+  const diff = Math.ceil((new Date(dueDate) - new Date()) / (1000 * 60 * 60 * 24));
+  return diff;
 }
-  
 
-async function borrowBook(event, button) {
-  event.stopPropagation();
+function statusBadge(loan) {
+  const now     = new Date();
+  const overdue = loan.status === "borrowed" && loan.dueDate && new Date(loan.dueDate) < now;
+  if (overdue)              return `<span class="badge bg-danger">Overdue</span>`;
+  if (loan.status === "borrowed")  return `<span class="badge bg-success">Active</span>`;
+  if (loan.status === "reserved")  return `<span class="badge bg-warning text-dark">Reserved</span>`;
+  if (loan.status === "returned")  return `<span class="badge bg-secondary">Returned</span>`;
+  if (loan.status === "cancelled") return `<span class="badge bg-secondary">Cancelled</span>`;
+  return `<span class="badge bg-secondary">${loan.status}</span>`;
+}
 
-  const bookId = button.dataset.id;
-  const token = localStorage.getItem("token");
+// ── Load borrowed books ───────────────────────────────────────────
+async function loadBorrowedBooks() {
+  const token     = localStorage.getItem("token");
+  const container = document.getElementById("borrowedContainer");
+  const emptyCard = document.getElementById("borrowedEmpty");
 
-  if (!token) {
-    alert("Please login again");
-    window.location.href = "login.html";
-    return;
-  }
+  if (container) container.innerHTML = `
+    <div class="col-12 text-center py-4">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2 text-muted">Loading your books…</p>
+    </div>`;
 
   try {
-    const response = await fetch("http://localhost:3000/api/borrowed", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        bookId
-      })
+    const res    = await fetch(`${API}/borrowed/my`, {
+      headers: { "Authorization": `Bearer ${token}` },
     });
+    const result = await res.json();
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      alert(data.message);
+    if (!res.ok || !result.success) {
+      if (container) container.innerHTML = `<div class="col-12"><div class="alert alert-danger">Failed to load books.</div></div>`;
       return;
     }
 
-    alert("Book borrowed successfully!");
-  } catch (error) {
-    console.log(error);
-    alert("Server error");
+    const loans = result.data || [];
+
+    // ── Stats ──────────────────────────────────────────────────
+    const now       = new Date();
+    const active    = loans.filter((l) => l.status === "borrowed");
+    const reserved  = loans.filter((l) => l.status === "reserved");
+    const dueSoon   = active.filter((l) => l.dueDate && daysLeft(l.dueDate) <= 3 && daysLeft(l.dueDate) >= 0);
+    const overdue   = active.filter((l) => l.dueDate && new Date(l.dueDate) < now);
+
+    // Update stat cards
+    const statEl = (cls) => document.querySelector(cls);
+    const totalEl    = document.querySelector(".totalBorrowedCount");
+    const reservedEl = document.querySelector(".totalReservedCount");
+    const dueSoonEl  = document.querySelector(".totalDueSoonCount");
+    if (totalEl)    totalEl.textContent    = active.length;
+    if (reservedEl) reservedEl.textContent = reserved.length;
+    if (dueSoonEl)  dueSoonEl.textContent  = dueSoon.length + overdue.length;
+
+    // Update section heading
+    const headingEl = document.querySelector(".currentlyBorrowedTitle");
+    if (headingEl) headingEl.textContent = `Currently Borrowed (${active.length + reserved.length})`;
+
+    // ── Cards ──────────────────────────────────────────────────
+    if (!container) return;
+
+    // Filter to active + reserved only (not returned/cancelled)
+    const current = loans.filter((l) => l.status === "borrowed" || l.status === "reserved");
+
+    if (!current.length) {
+      if (emptyCard) emptyCard.style.display = "block";
+      container.innerHTML = "";
+      return;
+    }
+
+    if (emptyCard) emptyCard.style.display = "none";
+
+    container.innerHTML = current.map((loan) => {
+      const book   = loan.bookId || {};
+      const title  = book.title  || "Unknown Book";
+      const author = book.author || "Unknown Author";
+      const cat    = book.category || "";
+      const cover  = book.coverImageUrl
+        ? `<img src="${book.coverImageUrl}" alt="${title}" class="rounded" width="95" height="130" style="object-fit:cover">`
+        : `<div style="width:95px;height:130px;background:#f0f4f8;border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="bi bi-book fs-3 text-muted"></i></div>`;
+
+      const borrowed  = fmtDate(loan.borrowDate);
+      const due       = fmtDate(loan.dueDate);
+      const days      = daysLeft(loan.dueDate);
+      const dueLabel  = days !== null
+        ? (days < 0  ? `<span class="text-danger fw-semibold">Overdue by ${Math.abs(days)} day(s)</span>`
+          : days === 0 ? `<span class="text-warning fw-semibold">Due today!</span>`
+          : `${days} day(s) remaining`)
+        : "";
+
+      const actionBtn = loan.status === "borrowed"
+        ? `<button class="btn btn-outline-danger w-100" onclick="returnBook('${loan._id}', this)">
+             <i class="bi bi-arrow-return-left me-1"></i> Return Book
+           </button>`
+        : loan.status === "reserved"
+        ? `<button class="btn btn-outline-warning w-100" onclick="cancelReservation('${loan._id}', this)">
+             <i class="bi bi-x-circle me-1"></i> Cancel Reservation
+           </button>`
+        : "";
+
+      return `
+        <div class="col-lg-6" id="loan-${loan._id}">
+          <div class="card h-100 border rounded-4 shadow-sm">
+            <div class="card-body">
+              <div class="d-flex">
+                ${cover}
+                <div class="ms-3 flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start gap-2">
+                    <h4 class="fw-semibold mb-1" style="font-size:1rem">${title}</h4>
+                    ${statusBadge(loan)}
+                  </div>
+                  <p class="text-secondary mb-1 small">by ${author}</p>
+                  ${cat ? `<span class="badge text-dark border small">${cat}</span>` : ""}
+                  <div class="mt-3">
+                    <p class="mb-1 small"><i class="bi bi-calendar-event me-2"></i>Borrowed: ${borrowed}</p>
+                    <p class="mb-1 small"><i class="bi bi-clock me-2"></i>Due: ${due} ${dueLabel ? `(${dueLabel})` : ""}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3 g-2">
+                <div class="col-6">${actionBtn}</div>
+                <div class="col-6">
+                  <button class="btn btn-outline-secondary w-100"
+                    onclick="window.location.href='book-details.html?id=${book._id}'">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join("");
+
+  } catch (err) {
+    console.error(err);
+    if (container) container.innerHTML = `<div class="col-12"><div class="alert alert-danger">Server error. Please try again.</div></div>`;
   }
 }
 
-async function loadBorrowedBooks() {
-
-const token = localStorage.getItem("token");
-
-try {
-
-const response = await fetch(
-"http://localhost:3000/api/borrowed",
-{
-method:"GET",
-headers:{
-Authorization:`Bearer ${token}`
-}
-}
-);
-
-const result = await response.json();
-
-document.querySelector(".totalBorrowedCount").textContent =
-result.totalBorrowed;
-
-document.querySelector(".currentlyBorrowedTitle").textContent =
-`Currently Borrowed (${result.totalBorrowed})`;
-
-const container =
-document.getElementById("borrowedContainer");
-
-const emptyCard =
-document.getElementById("borrowedEmpty");
-
-container.innerHTML = "";
-
-if(result.data.length === 0){
-
-emptyCard.style.display = "block";
-
-return;
-
+// ── Return book ───────────────────────────────────────────────────
+async function returnBook(loanId, btn) {
+  if (!confirm("Return this book?")) return;
+  const token = localStorage.getItem("token");
+  btn.disabled    = true;
+  btn.textContent = "Processing…";
+  try {
+    const res  = await fetch(`${API}/borrowed/${loanId}/return`, {
+      method:  "PUT",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast("Book returned successfully.", "success");
+      await loadBorrowedBooks();
+    } else {
+      showToast(data.message || "Could not return book.", "danger");
+      btn.disabled    = false;
+      btn.textContent = "Return Book";
+    }
+  } catch (err) {
+    showToast("Server error.", "danger");
+    btn.disabled    = false;
+    btn.textContent = "Return Book";
+  }
 }
 
-emptyCard.style.display = "none";
+// ── Cancel reservation ────────────────────────────────────────────
+async function cancelReservation(loanId, btn) {
+  if (!confirm("Cancel this reservation?")) return;
+  const token = localStorage.getItem("token");
+  btn.disabled    = true;
+  btn.textContent = "Processing…";
+  try {
+    const res  = await fetch(`${API}/borrowed/${loanId}/cancel`, {
+      method:  "PUT",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast("Reservation cancelled.", "success");
+      await loadBorrowedBooks();
+    } else {
+      showToast(data.message || "Could not cancel reservation.", "danger");
+      btn.disabled    = false;
+      btn.textContent = "Cancel Reservation";
+    }
+  } catch (err) {
+    showToast("Server error.", "danger");
+    btn.disabled    = false;
+    btn.textContent = "Cancel Reservation";
+  }
+}
 
-result.data.forEach(book => {
-
-const borrowDate =
-new Date(book.borrowDate).toLocaleDateString();
-
-const dueDate =
-new Date(
-new Date(book.borrowDate).getTime() +
-14 * 24 * 60 * 60 * 1000
-).toLocaleDateString();
-
-container.innerHTML += `
-
-<div class="col-lg-6">
-
-  <div class="card h-100 border rounded-4 shadow-sm">
-
-    <div class="card-body">
-
+// ── Toast ─────────────────────────────────────────────────────────
+function showToast(msg, type = "success") {
+  let t = document.getElementById("borrowedToast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id        = "borrowedToast";
+    t.className = "position-fixed bottom-0 end-0 p-3";
+    t.style.zIndex = "9999";
+    document.body.appendChild(t);
+  }
+  t.innerHTML = `
+    <div class="toast show text-bg-${type} border-0" role="alert">
       <div class="d-flex">
-
-        <img
-          src="${book.bookId?.coverImage || 'https://placehold.co/95x130'}"
-          alt="${book.bookId?.title}"
-          class="rounded"
-          width="95"
-          height="130"
-        >
-
-        <div class="ms-3 flex-grow-1">
-
-          <div class="d-flex justify-content-between">
-
-            <h4 class="fw-semibold">
-              ${book.bookId?.title || "Unknown Book"}
-            </h4>
-
-            <span class="badge bg-success align-self-start">
-              ${book.status}
-            </span>
-
-          </div>
-
-          <p class="text-secondary mb-2">
-            by ${book.bookId?.author || "Unknown Author"}
-          </p>
-
-          <span class="badge text-dark border">
-            ${book.bookId?.category || "Book"}
-          </span>
-
-          <div class="mt-4">
-
-            <p class="mb-2">
-              <i class="bi bi-calendar-event me-2"></i>
-              Borrowed: ${borrowDate}
-            </p>
-
-            <p class="mb-0">
-              <i class="bi bi-clock me-2"></i>
-              Due: ${dueDate}
-            </p>
-
-          </div>
-
-        </div>
-
+        <div class="toast-body">${msg}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.closest('.toast').remove()"></button>
       </div>
-
-      <div class="row mt-4 g-2">
-
-        <div class="col-6">
-          <button
-            class="btn btn-outline-danger w-100"
-            onclick="returnBook('${book._id}')"
-          >
-            <i class="bi bi-arrow-return-left me-2"></i>
-            Return Book
-          </button>
-        </div>
-
-        <div class="col-6">
-          <button
-            class="btn btn-outline-secondary w-100"
-          >
-            View Details
-          </button>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-`;
-
-});
-
+    </div>`;
+  setTimeout(() => { t.innerHTML = ""; }, 4000);
 }
 
-catch(error){
-
-console.log(error);
-
-}
-
-}
-
+// ── Init ──────────────────────────────────────────────────────────
 loadBorrowedBooks();
