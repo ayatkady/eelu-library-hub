@@ -79,22 +79,26 @@ function renderBooks(books) {
   grid.innerHTML = books.map((b) => {
     const avail     = b.availableCopies ?? 0;
     const total     = b.totalCopies     ?? 0;
-    const availText = avail > 0 ? `${avail} of ${total} copies available` : "Not available";
-    const availCls  = avail > 0 ? "text-success" : "text-danger";
-    const cover     = b.coverImageUrl
-      ? `<img src="${b.coverImageUrl}" alt="${escHtml(b.title)}" />`
-      : `<div class="book-card-placeholder"><i class="bi bi-book fs-1 text-muted"></i></div>`;
+    const availText = avail > 0
+      ? `<i class="bi bi-check-circle-fill me-1"></i>${avail} of ${total} copies available`
+      : `<i class="bi bi-x-circle-fill me-1"></i>Not available`;
+    const availCls  = avail > 0 ? "book-avail-ok" : "book-avail-no";
+
+    const cover = b.coverImageUrl
+      ? `<img src="${b.coverImageUrl}" alt="${escHtml(b.title)}" loading="lazy" />`
+      : `<div class="book-card-no-cover"><i class="bi bi-book"></i></div>`;
+
+    const actionBtn = avail > 0
+      ? `<button class="book-borrow-btn" onclick="handleBorrow(event,'${b._id}',this)">
+           <i class="bi bi-book me-1"></i>Borrow Book
+         </button>`
+      : `<button class="book-reserve-btn" onclick="handleReserve(event,'${b._id}',this)">
+           <i class="bi bi-bookmark me-1"></i>Reserve
+         </button>`;
 
     return `
-      <article class="book-card"
-        onclick="goToDetails(this)"
-        data-id="${b._id}"
-        data-title="${escHtml(b.title)}"
-        data-author="${escHtml(b.author)}"
-        data-category="${escHtml(b.category)}"
-        data-faculty="${escHtml(b.faculty)}"
-        data-year="${escHtml(b.academicYear)}">
-        ${cover}
+      <article class="book-card" data-id="${b._id}" onclick="goToDetails('${b._id}')">
+        <div class="book-card-img-wrap">${cover}</div>
         <div class="book-card-body">
           <div class="book-meta-row">
             <span class="badge-faculty">${escHtml(b.faculty)}</span>
@@ -104,23 +108,22 @@ function renderBooks(books) {
           <div class="book-author">by ${escHtml(b.author)}</div>
           <ul class="book-info-list">
             <li class="book-info-row">
-              <i class="bi bi-journal-code"></i>
+              <i class="bi bi-tag"></i>
               <span>${escHtml(b.category)}</span>
+            </li>
+            <li class="book-info-row">
+              <i class="bi bi-people"></i>
+              <span>${escHtml(b.faculty)} Faculty</span>
             </li>
             ${b.pdfUrl ? `<li class="book-info-row"><i class="bi bi-file-earmark-pdf"></i><span>PDF available</span></li>` : ""}
           </ul>
           <div class="book-availability ${availCls}">${availText}</div>
-          ${avail > 0 ? `
-          <button class="btn btn-primary borrow-btn mt-2"
-            onclick="borrowBook(event, this)"
-            data-id="${b._id}">
-            Borrow Book
-          </button>` : `
-          <button class="btn btn-outline-secondary mt-2"
-            onclick="reserveBook(event, this)"
-            data-id="${b._id}">
-            Reserve Book
-          </button>`}
+          <div class="book-card-actions" onclick="event.stopPropagation()">
+            ${actionBtn}
+            <button class="book-details-btn" onclick="goToDetails('${b._id}')">
+              Details
+            </button>
+          </div>
         </div>
       </article>`;
   }).join("");
@@ -156,19 +159,18 @@ document.querySelector(".btn-clear-filters")?.addEventListener("click", () => {
 });
 
 // ── Navigation ────────────────────────────────────────────────────
-function goToDetails(card) {
-  window.location.href = `book-details.html?id=${card.dataset.id}`;
+function goToDetails(id) {
+  window.location.href = `book-details.html?id=${id}`;
 }
 
-// ── Borrow ────────────────────────────────────────────────────────
-async function borrowBook(event, button) {
+// ── Borrow (goes to my-borrowed after success) ────────────────────
+async function handleBorrow(event, bookId, button) {
   event.stopPropagation();
-  const bookId = button.dataset.id;
-  const token  = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   if (!token) { window.location.href = "login.html"; return; }
 
-  button.disabled    = true;
-  button.textContent = "Processing…";
+  button.disabled   = true;
+  button.innerHTML  = `<span class="spinner-border spinner-border-sm me-1"></span>Processing…`;
 
   try {
     const res  = await fetch(`${API}/borrowed`, {
@@ -178,30 +180,28 @@ async function borrowBook(event, button) {
     });
     const data = await res.json();
     if (res.ok && data.success) {
-      showToast("Book borrowed successfully! Check My Books.", "success");
-      await loadBooks(); // refresh availability
+      // Redirect straight to My Books
+      window.location.href = "my-borrowed.html";
     } else {
       showToast(data.message || "Failed to borrow book.", "danger");
-      button.disabled    = false;
-      button.textContent = "Borrow Book";
+      button.disabled  = false;
+      button.innerHTML = `<i class="bi bi-book me-1"></i>Borrow Book`;
     }
   } catch (err) {
-    console.error(err);
     showToast("Server error. Please try again.", "danger");
-    button.disabled    = false;
-    button.textContent = "Borrow Book";
+    button.disabled  = false;
+    button.innerHTML = `<i class="bi bi-book me-1"></i>Borrow Book`;
   }
 }
 
 // ── Reserve ───────────────────────────────────────────────────────
-async function reserveBook(event, button) {
+async function handleReserve(event, bookId, button) {
   event.stopPropagation();
-  const bookId = button.dataset.id;
-  const token  = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   if (!token) { window.location.href = "login.html"; return; }
 
-  button.disabled    = true;
-  button.textContent = "Processing…";
+  button.disabled   = true;
+  button.innerHTML  = `<span class="spinner-border spinner-border-sm me-1"></span>Processing…`;
 
   try {
     const res  = await fetch(`${API}/borrowed/reserve`, {
@@ -211,15 +211,16 @@ async function reserveBook(event, button) {
     });
     const data = await res.json();
     if (res.ok && data.success) {
-      showToast("Book reserved successfully! Check My Books.", "success");
+      window.location.href = "my-borrowed.html";
     } else {
       showToast(data.message || "Failed to reserve book.", "danger");
+      button.disabled  = false;
+      button.innerHTML = `<i class="bi bi-bookmark me-1"></i>Reserve`;
     }
   } catch (err) {
-    showToast("Server error. Please try again.", "danger");
-  } finally {
-    button.disabled    = false;
-    button.textContent = "Reserve Book";
+    showToast("Server error.", "danger");
+    button.disabled  = false;
+    button.innerHTML = `<i class="bi bi-bookmark me-1"></i>Reserve`;
   }
 }
 
