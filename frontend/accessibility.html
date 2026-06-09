@@ -4,348 +4,301 @@
   <meta charset="UTF-8" />
   <title>EELU Library Hub – Accessibility</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="combined-page">
-  <!-- Header -->
+
+  <!-- ══ Header ══ -->
   <header class="main-header">
-      <div class="header-container">
-    <div class="brand">
-      <div class="brand-icon"><i class="bi bi-book"></i></div>
-      <div>
-        <div class="brand-title">EELU Library Hub</div>
-        <div class="brand-sub">Egyptian E-Learning University</div>
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon"><i class="bi bi-book"></i></div>
+        <div>
+          <div class="brand-title">EELU Library Hub</div>
+          <div class="brand-sub">Egyptian E-Learning University</div>
+        </div>
       </div>
-    </div>
-    <nav class="nav-links">
-      <a href="combined.html#home"><i class="bi bi-house"></i> Home</a>
-      <a href="combined.html#search"><i class="bi bi-search"></i> Search</a>
-      <a href="my-borrowed.html"><i class="bi bi-book"></i> My Books</a>
-      <a href="accessibility.html"><i class="bi bi-universal-access"></i> Accessibility</a>
-      <a href="combined.html#contact"><i class="bi bi-telephone"></i> Contact</a>
-    </nav>
-    <div class="user-block">
-      <div class="user-avatar"><i class="bi bi-person"></i></div>
-      <div>
-        <div class="user-name">Ahmed Hassan</div>
-        <div class="user-meta">IT - Year 2</div>
+      <nav class="nav-links">
+        <a href="search.html"><i class="bi bi-house"></i> Home</a>
+        <a href="search.html"><i class="bi bi-search"></i> Search</a>
+        <a href="my-borrowed.html"><i class="bi bi-book"></i> My Books</a>
+        <a href="accessibility.html" class="nav-active"><i class="bi bi-universal-access"></i> Accessibility</a>
+        <a href="contact.html"><i class="bi bi-telephone"></i> Contact</a>
+      </nav>
+      <div class="user-block">
+        <div class="user-avatar"><i class="bi bi-person"></i></div>
+        <div>
+          <div class="user-name">Student</div>
+          <div class="user-meta">IT - Year 1</div>
+        </div>
+        <button type="button" class="btn-logout">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
       </div>
-      <button type="button" class="btn-logout"><i class="bi bi-box-arrow-right"></i> Logout</button>
-    </div>
     </div>
   </header>
 
-  <!-- Accessibility content (all screens combined) -->
-  <section class="access-section" id="accessibility">
+  <!-- ══ Page ══ -->
+  <section class="access-section">
     <div class="container-xl">
+
+      <!-- Page heading -->
       <h1 class="access-heading">Accessibility Features</h1>
       <p class="access-subtitle">
-        Customize your reading experience with our accessibility tools designed to support all students, including those with special needs.
+        Customize your reading experience with tools designed to support all students,
+        including those with special needs.
       </p>
 
-      <!-- Current settings -->
+      <!-- ── Current Settings ── -->
       <div class="access-current-card">
-        <div class="access-current-title">Current Settings</div>
-        <div class="access-current-grid">
-          <div>
-            <div class="access-current-item-label">Font Size</div>
-            <div class="access-current-item-value" id="settingFontSize">100%</div>
-          </div>
-          <div>
-            <div class="access-current-item-label">High Contrast</div>
-            <div class="access-current-item-value access-current-item-value--off" id="settingContrast">OFF</div>
-          </div>
-          <div>
-            <div class="access-current-item-label">Screen Reader</div>
-            <div class="access-current-item-value access-current-item-value--off" id="settingScreenReader">OFF</div>
-          </div>
-        </div>
-        <div class="text-end mt-3">
-          <button type="button" class="btn btn-outline-secondary btn-sm" id="resetAllBtn">
-            <i class="bi bi-arrow-counterclockwise me-1"></i> Reset All Settings
+        <div class="acc-current-header">
+          <span class="access-current-title">Current Settings</span>
+          <button type="button" class="acc-reset-btn" id="resetAllBtn">
+            <i class="bi bi-arrow-counterclockwise me-1"></i>Reset All
           </button>
+        </div>
+        <div class="access-current-grid">
+          <div class="acc-setting-item">
+            <span class="access-current-item-label">Font Size</span>
+            <span class="access-current-item-value" id="settingFontSize">100%</span>
+          </div>
+          <div class="acc-setting-item">
+            <span class="access-current-item-label">High Contrast</span>
+            <span class="access-current-item-value access-current-item-value--off" id="settingContrast">OFF</span>
+          </div>
+          <div class="acc-setting-item">
+            <span class="access-current-item-label">Screen Reader</span>
+            <span class="access-current-item-value access-current-item-value--off" id="settingScreenReader">OFF</span>
+          </div>
         </div>
       </div>
 
-      <!-- Text size + Alternative formats / Keyboard -->
-      <div class="d-flex flex-column gap-3">
+      <!-- ── Row 1: Text Size | Toggles ── -->
+      <div class="acc-grid-2">
+
+        <!-- Text Size -->
         <div class="access-card">
           <div class="access-card-header">
             <div class="access-card-icon"><i class="bi bi-type"></i></div>
             <div>
               <div class="access-card-title">Text Size Control</div>
-              <p class="access-card-text">Adjust the text size across the entire website for better readability.</p>
+              <p class="access-card-text">Adjust font size across the site for better readability.</p>
+            </div>
+          </div>
+          <div class="access-text-buttons">
+            <button class="acc-size-btn" id="fontDecBtn">
+              <i class="bi bi-dash-lg me-1"></i>A&minus;
+            </button>
+            <button class="acc-size-btn acc-size-btn--reset" id="fontResetBtn">
+              Reset
+            </button>
+            <button class="acc-size-btn" id="fontIncBtn">
+              A&plus;<i class="bi bi-plus-lg ms-1"></i>
+            </button>
+          </div>
+          <div class="access-text-preview" id="textPreview">
+            The quick brown fox jumps over the lazy dog. اللغة العربية مدعومة أيضاً.
+          </div>
+          <div class="access-text-current">
+            Current size: <strong id="fontSizeLabel">100%</strong>
+          </div>
+        </div>
+
+        <!-- Toggles column -->
+        <div class="acc-toggles-col">
+
+          <!-- High Contrast -->
+          <div class="access-toggle-card">
+            <div class="acc-toggle-info">
+              <div class="access-card-header" style="margin-bottom:.5rem">
+                <div class="access-card-icon"><i class="bi bi-eye"></i></div>
+                <div>
+                  <div class="access-card-title">High Contrast</div>
+                  <p class="access-card-text mb-0">Yellow-on-black for better visibility.</p>
+                </div>
+              </div>
+              <p class="access-toggle-info-text">
+                Switches to a high-contrast yellow palette to reduce eye strain and improve readability.
+              </p>
+            </div>
+            <div class="toggle-switch" id="contrastToggle"
+              role="switch" aria-checked="false"
+              aria-label="Toggle High Contrast Mode"
+              tabindex="0"
+              onkeydown="if(event.key==='Enter'||event.key===' ')this.click()">
+              <div class="toggle-knob"></div>
             </div>
           </div>
 
-          <div class="access-text-buttons">
-            <button type="button" class="btn btn-outline-secondary btn-sm" id="fontDecBtn">Decrease (A-)</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm" id="fontIncBtn">Increase (A+)</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm" id="fontResetBtn">Reset to Default</button>
+          <!-- Screen Reader -->
+          <div class="access-toggle-card">
+            <div class="acc-toggle-info">
+              <div class="access-card-header" style="margin-bottom:.5rem">
+                <div class="access-card-icon"><i class="bi bi-volume-up"></i></div>
+                <div>
+                  <div class="access-card-title">Screen Reader</div>
+                  <p class="access-card-text mb-0">Enhanced ARIA labels for assistive tech.</p>
+                </div>
+              </div>
+              <p class="access-toggle-info-text">
+                Activates additional ARIA live regions and announces page changes to screen reader software.
+              </p>
+            </div>
+            <div class="toggle-switch" id="screenReaderToggle"
+              role="switch" aria-checked="false"
+              aria-label="Toggle Screen Reader Mode"
+              tabindex="0"
+              onkeydown="if(event.key==='Enter'||event.key===' ')this.click()">
+              <div class="toggle-knob"></div>
+            </div>
           </div>
 
-          <div class="access-text-preview">
-            This is a sample text to preview the current font size. The quick brown fox jumps over the lazy dog.
-          </div>
-          <div class="access-text-current">Current: <strong>100%</strong></div>
-        </div>
+        </div><!-- /acc-toggles-col -->
+      </div><!-- /acc-grid-2 -->
 
-        <div class="access-card ">
+      <!-- ── Row 2: Alternative Formats | Keyboard Shortcuts ── -->
+      <div class="acc-grid-2" style="margin-top:1.5rem">
+
+        <!-- Alternative Formats -->
+        <div class="access-card">
           <div class="access-card-header">
             <div class="access-card-icon"><i class="bi bi-book-half"></i></div>
             <div>
               <div class="access-card-title">Alternative Book Formats</div>
-              <p class="access-card-text">Access books in various formats suitable for different needs.</p>
+              <p class="access-card-text">Access books in formats suited to different needs.</p>
             </div>
           </div>
-
-  <div class="row g-4">
-    <div class="col-12 col-md-6">
-
-  <div class="access-alt-card">
-    <div class="access-alt-title">
-      <i class="bi bi-headphones me-2"></i>
-      Audio Books
-    </div>
-    <p class="access-alt-text">
-      Select books available in audio format for listening.
-    </p>
-  </div>
-  </div>
-
-      <div class="col-12 col-md-6">
-  <div class="access-alt-card">
-    <div class="access-alt-title">
-      <i class="bi bi-download me-2"></i>
-      PDF Downloads
-    </div>
-    <p class="access-alt-text">
-      Compatible with most screen readers and text-to-speech software.
-    </p>
-  </div>
-  </div>
-
-    <div class="col-12 col-md-6">
- <div class="access-alt-card">
-  <div class="access-alt-title">
-    <i class="bi bi-grid-3x3-gap-fill me-2"></i>
-    Braille Materials
-  </div>
-
-  <p class="access-alt-text">
-    Braille versions available for select academic materials.
-  </p>
-</div>
-</div>
-    <div class="col-12 col-md-6">
-
-  <div class="access-alt-card">
-    <div class="access-alt-title">
-      <i class="bi bi-file-earmark-text me-2"></i>
-      ePub Format
-    </div>
-    <p class="access-alt-text">
-      Reflowable text that adapts to your device and font preferences.
-    </p>
-  </div>
-    
-
-</div>
-       
-          <div class="access-kb-shortcuts mt-3">
-            <div class="fw-semibold mb-1">Keyboard Navigation</div>
-            <div class="access-kb-row">
-              <span class="access-kb-key">Tab</span>
-              <span>Move forward through interactive elements</span>
+          <div class="acc-formats-grid">
+            <div class="acc-format-item">
+              <i class="bi bi-headphones acc-format-icon"></i>
+              <span class="acc-format-title">Audio Books</span>
+              <span class="acc-format-text">Listen to books in audio format.</span>
             </div>
-            <div class="access-kb-row">
-              <span class="access-kb-key">Shift + Tab</span>
-              <span>Move backward through interactive elements</span>
+            <div class="acc-format-item">
+              <i class="bi bi-file-earmark-pdf acc-format-icon"></i>
+              <span class="acc-format-title">PDF Downloads</span>
+              <span class="acc-format-text">Compatible with screen readers.</span>
             </div>
-            <div class="access-kb-row">
-              <span class="access-kb-key">Enter</span>
+            <div class="acc-format-item">
+              <i class="bi bi-grid-3x3-gap-fill acc-format-icon"></i>
+              <span class="acc-format-title">Braille</span>
+              <span class="acc-format-text">Available for select materials.</span>
+            </div>
+            <div class="acc-format-item">
+              <i class="bi bi-file-earmark-text acc-format-icon"></i>
+              <span class="acc-format-title">ePub Format</span>
+              <span class="acc-format-text">Reflowable text for any device.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Keyboard Shortcuts -->
+        <div class="access-card">
+          <div class="access-card-header">
+            <div class="access-card-icon"><i class="bi bi-keyboard"></i></div>
+            <div>
+              <div class="access-card-title">Keyboard Navigation</div>
+              <p class="access-card-text">Navigate the site without a mouse.</p>
+            </div>
+          </div>
+          <div class="acc-kb-table">
+            <div class="acc-kb-row">
+              <kbd>Tab</kbd>
+              <span>Move forward through elements</span>
+            </div>
+            <div class="acc-kb-row">
+              <kbd>Shift + Tab</kbd>
+              <span>Move backward through elements</span>
+            </div>
+            <div class="acc-kb-row">
+              <kbd>Enter</kbd>
               <span>Activate buttons and links</span>
             </div>
-            <div class="access-kb-row">
-              <span class="access-kb-key">Space</span>
+            <div class="acc-kb-row">
+              <kbd>Space</kbd>
               <span>Activate buttons and checkboxes</span>
             </div>
-            <div class="access-kb-row">
-              <span class="access-kb-key">Esc</span>
+            <div class="acc-kb-row">
+              <kbd>Esc</kbd>
               <span>Close dialogs and menus</span>
             </div>
+            <div class="acc-kb-row">
+              <kbd>Shift + C</kbd>
+              <span>Toggle High Contrast</span>
+            </div>
+            <div class="acc-kb-row">
+              <kbd>Shift + R</kbd>
+              <span>Toggle Screen Reader</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /acc-grid-2 -->
+
+      <!-- ── Assistance card ── -->
+      <div class="access-assist-card" style="margin-top:1.5rem">
+        <div class="acc-assist-body">
+          <div>
+            <div class="access-assist-title">Need Accessibility Assistance?</div>
+            <p class="access-assist-text">
+              Our team is here to help. Contact us to request alternative formats,
+              report issues, or get help using assistive technologies.
+            </p>
+          </div>
+          <div class="acc-assist-contacts">
+            <a href="mailto:accessibility@eelu.edu.eg" class="acc-contact-chip">
+              <i class="bi bi-envelope"></i>
+              accessibility@eelu.edu.eg
+            </a>
+            <a href="tel:+20123456789" class="acc-contact-chip">
+              <i class="bi bi-telephone"></i>
+              +20 123 456 789
+            </a>
           </div>
         </div>
       </div>
 
-<!-- High contrast + Screen reader -->
-<div class="container mt-4">
-
-  <div class="row g-4">
-
-    <!-- Card 1 -->
-    <div class="col-12 col-lg-6">
-
-      <div class="access-toggle-card h-100">
-
-        <div>
-          <div class="access-card-header mb-2">
-            <div class="access-card-icon"><i class="bi bi-eye"></i></div>
-
-            <div>
-              <div class="access-card-title">High Contrast Mode</div>
-              <p class="access-card-text mb-0">
-                Enhance visibility with high contrast colors.
-              </p>
-            </div>
-          </div>
-
-          <p class="access-toggle-info-text">
-            Enable High Contrast Mode to increase color contrast for better visibility and reduced eye strain.
-          </p>
-        </div>
-
-        <div class="toggle-switch" id="contrastToggle" role="switch" aria-checked="false"
-          aria-label="Toggle High Contrast Mode" tabindex="0"
-          onkeydown="if(event.key==='Enter'||event.key===' ')this.click()">
-          <div class="toggle-knob"></div>
-        </div>
-    <div class="col-12 col-lg-6">
-
-      <div class="access-toggle-card h-100">
-
-        <div>
-          <div class="access-card-header mb-2">
-            <div class="access-card-icon"><i class="bi bi-volume-up"></i></div>
-
-            <div>
-              <div class="access-card-title">Screen Reader Support</div>
-              <p class="access-card-text mb-0">
-                Enhanced support for screen readers and assistive technologies.
-              </p>
-            </div>
-          </div>
-
-          <p class="access-toggle-info-text">
-            Enable Screen Reader Mode to activate additional ARIA labels and announce page changes.
-          </p>
-
-          <div class="mt-3">
-            <div class="fw-semibold mb-1" style="font-size:0.86rem;">
-              Compatible Screen Readers:
-            </div>
-
-            <ul class="mb-0" style="font-size:0.82rem; color:#4b5563;">
-              <li>JAWS (Job Access With Speech)</li>
-              <li>NVDA (NonVisual Desktop Access)</li>
-              <li>VoiceOver (macOS and iOS)</li>
-              <li>TalkBack (Android)</li>
-              <li>Narrator (Windows)</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="toggle-switch" id="screenReaderToggle" role="switch" aria-checked="false"
-          aria-label="Toggle Screen Reader Mode" tabindex="0"
-          onkeydown="if(event.key==='Enter'||event.key===' ')this.click()">
-          <div class="toggle-knob"></div>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-
-</div>
-      <!-- Assistance card -->
-      <div class="access-assist-card">
-        <div class="access-assist-title">Need Accessibility Assistance?</div>
-        <p class="access-assist-text">
-          Our team is here to help you with any accessibility needs. You can contact us to:
-        </p>
-        <ul class="access-assist-list">
-          <li>Request alternative format materials</li>
-          <li>Report accessibility issues</li>
-          <li>Get help using assistive technologies</li>
-          <li>Share accessibility feature suggestions</li>
-        </ul>
-        <div class="access-assist-contact">
-          <span>Email: <strong>accessibility@eelu.edu.eg</strong></span>
-          <span>Phone: <strong>+20 123 456 789</strong></span>
-        </div>
-      </div>
-    </div>
+    </div><!-- /container-xl -->
   </section>
 
-  <!-- Footer -->
+  <!-- ══ Footer ══ -->
   <footer class="main-footer">
     <div class="footer-grid">
       <div>
         <h4>EELU Library Hub</h4>
-        <p>The Egyptian E-Learning University digital library provides comprehensive academic resources for students and faculty of Business Administration and Information Technology. Supporting inclusive education with accessibility features for all students.</p>
+        <p>The Egyptian E-Learning University digital library — supporting BA and IT students with comprehensive academic resources and accessibility features.</p>
       </div>
       <div>
         <h4>Quick Links</h4>
         <ul>
-          <li><a href="combined.html#home">Home</a></li>
-          <li><a href="combined.html#search">Search Books</a></li>
+          <li><a href="search.html">Search Books</a></li>
           <li><a href="my-borrowed.html">My Books</a></li>
           <li><a href="accessibility.html">Accessibility</a></li>
+          <li><a href="contact.html">Contact Support</a></li>
           <li><a href="https://eelu.edu.eg" target="_blank" rel="noopener">EELU Official Website</a></li>
         </ul>
       </div>
       <div>
         <h4>Contact Us</h4>
-            <div class="contact-item">
-  <i class="bi bi-geo-alt"></i>
-  <a href="https://www.google.com/maps?q=Cairo,Egypt" target="_blank">
-    Cairo, Egypt
-  </a>
-</div>
-
-<div class="contact-item">
-  <i class="bi bi-telephone"></i>
-  <a href="tel:+20123456789">
-    +20 123 456 789
-  </a>
-</div>
-
-<div class="contact-item">
-  <i class="bi bi-envelope"></i>
-  <a href="mailto:library@eelu.edu.eg">
-    library@eelu.edu.eg
-  </a>
-</div>
-
-<div class="social-icons">
-  <a href="https://facebook.com" target="_blank" aria-label="Facebook">
-    <i class="bi bi-facebook"></i>
-  </a>
-
-  <a href="https://twitter.com" target="_blank" aria-label="Twitter">
-    <i class="bi bi-twitter-x"></i>
-  </a>
-
-  <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
-    <i class="bi bi-linkedin"></i>
-  </a>
-</div>
+        <div class="contact-item"><i class="bi bi-geo-alt"></i><a href="https://www.google.com/maps?q=Cairo,Egypt" target="_blank">Cairo, Egypt</a></div>
+        <div class="contact-item"><i class="bi bi-telephone"></i><a href="tel:+20123456789">+20 123 456 789</a></div>
+        <div class="contact-item"><i class="bi bi-envelope"></i><a href="mailto:library@eelu.edu.eg">library@eelu.edu.eg</a></div>
+        <div class="social-icons">
+          <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="https://twitter.com"  target="_blank" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        </div>
       </div>
     </div>
-    <div class="footer-copy">
-      © 2026 EELU Library Hub. All rights reserved. | Egyptian E-Learning University
-    </div>
+    <div class="footer-copy">© 2026 EELU Library Hub. All rights reserved. | Egyptian E-Learning University</div>
   </footer>
 
   <script src="accessibility.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
-
