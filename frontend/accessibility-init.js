@@ -1,84 +1,128 @@
 // ══════════════════════════════════════════════════════════════════
-// accessibility-init.js
-// يتحمل في كل الصفحات — يطبق إعدادات الـ Accessibility المحفوظة
+// accessibility-init.js — loads on every page
 // ══════════════════════════════════════════════════════════════════
 
 (function () {
-  // ── Font Size ────────────────────────────────────────────────────
-  const savedFontSize = parseInt(localStorage.getItem("fontSize") || "100");
+  // ── Font Size ──────────────────────────────────────────────────
+  var savedFontSize = parseInt(localStorage.getItem("fontSize") || "100");
   document.documentElement.style.fontSize = savedFontSize + "%";
 
-  // ── High Contrast ────────────────────────────────────────────────
+  // ── High Contrast ──────────────────────────────────────────────
   if (localStorage.getItem("highContrast") === "true") {
     document.body.classList.add("high-contrast");
   }
 
-  // ── Screen Reader live region ────────────────────────────────────
+  // ── Screen Reader live region ──────────────────────────────────
   if (localStorage.getItem("screenReader") === "true") {
-    const liveRegion = document.createElement("div");
-    liveRegion.id = "srLiveRegion";
-    liveRegion.setAttribute("aria-live", "polite");
-    liveRegion.setAttribute("aria-atomic", "true");
-    liveRegion.className = "visually-hidden";
-    document.body.appendChild(liveRegion);
+    var lr = document.createElement("div");
+    lr.id = "srLiveRegion";
+    lr.setAttribute("aria-live", "polite");
+    lr.setAttribute("aria-atomic", "true");
+    lr.className = "visually-hidden";
+    document.body.appendChild(lr);
   }
 })();
 
-// ── Mobile Nav (Hamburger + User block) ────────────────────────
+// ── Mobile Sidebar Nav ─────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
-  const toggle = document.getElementById("navToggle");
-  const menu   = document.getElementById("navMenu");
+  var MOBILE_BP = 991; // same breakpoint as CSS
+
+  var toggle = document.getElementById("navToggle");
+  var menu   = document.getElementById("navMenu");
   if (!toggle || !menu) return;
 
-  // ── Inject mobile user block at the bottom of the nav dropdown ──
-  const userName  = localStorage.getItem("userName")     || "Student";
-  const faculty   = localStorage.getItem("faculty")      || "IT";
-  const year      = localStorage.getItem("academicYear") || "Year 1";
+  // ── Overlay ────────────────────────────────────────────────────
+  var overlay = document.createElement("div");
+  overlay.id        = "navOverlay";
+  overlay.className = "nav-sidebar-overlay";
+  document.body.appendChild(overlay);
 
-  const mobileUser = document.createElement("div");
+  // ── Sidebar header (close button) ─────────────────────────────
+  var sidebarHeader = document.createElement("div");
+  sidebarHeader.id        = "navSidebarHeader";
+  sidebarHeader.className = "nav-sidebar-header";
+  sidebarHeader.innerHTML =
+    '<span class="nav-sidebar-title"><i class="bi bi-book me-2"></i>EELU Library</span>' +
+    '<button class="nav-sidebar-close" id="navClose" aria-label="Close menu">' +
+      '<i class="bi bi-x-lg"></i>' +
+    '</button>';
+  menu.insertBefore(sidebarHeader, menu.firstChild);
+
+  // ── Mobile user info block ─────────────────────────────────────
+  var userName = localStorage.getItem("userName")     || "Student";
+  var faculty  = localStorage.getItem("faculty")      || "IT";
+  var year     = localStorage.getItem("academicYear") || "Year 1";
+
+  var mobileUser = document.createElement("div");
   mobileUser.className = "nav-mobile-user";
-  mobileUser.innerHTML = `
-    <div class="nav-mobile-user-info">
-      <div class="nav-mobile-avatar"><i class="bi bi-person-fill"></i></div>
-      <div>
-        <div class="nav-mobile-name">${userName}</div>
-        <div class="nav-mobile-meta">${faculty} · ${year}</div>
-      </div>
-    </div>
-    <button class="nav-mobile-logout" id="mobileLogoutBtn">
-      <i class="bi bi-box-arrow-right"></i> Logout
-    </button>`;
+  mobileUser.innerHTML =
+    '<div class="nav-mobile-user-info">' +
+      '<div class="nav-mobile-avatar"><i class="bi bi-person-fill"></i></div>' +
+      '<div>' +
+        '<div class="nav-mobile-name">' + userName + '</div>' +
+        '<div class="nav-mobile-meta">' + faculty + ' · ' + year + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<button class="nav-mobile-logout" id="mobileLogoutBtn">' +
+      '<i class="bi bi-box-arrow-right"></i> Logout' +
+    '</button>';
   menu.appendChild(mobileUser);
 
-  // Logout from mobile menu
   document.getElementById("mobileLogoutBtn")?.addEventListener("click", function () {
     localStorage.clear();
     window.location.href = "login.html";
   });
 
-  // ── Toggle open/close ──────────────────────────────────────────
-  toggle.addEventListener("click", function (e) {
-    e.stopPropagation();
-    const isOpen = menu.classList.toggle("nav-open");
-    toggle.classList.toggle("nav-hamburger--open", isOpen);
-    toggle.setAttribute("aria-expanded", String(isOpen));
+  // ── Open / Close ───────────────────────────────────────────────
+  function isMobile() {
+    return window.innerWidth <= MOBILE_BP;
+  }
+
+  function openSidebar() {
+    if (!isMobile()) return;
+    menu.classList.add("nav-open");
+    overlay.classList.add("overlay-open");
+    toggle.classList.add("nav-hamburger--open");
+    toggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeSidebar() {
+    menu.classList.remove("nav-open");
+    overlay.classList.remove("overlay-open");
+    toggle.classList.remove("nav-hamburger--open");
+    toggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  // Reset sidebar state when resizing to desktop
+  window.addEventListener("resize", function () {
+    if (!isMobile()) closeSidebar();
   });
 
-  // Close when a nav link clicked
+  // ── Events ─────────────────────────────────────────────────────
+  toggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+    menu.classList.contains("nav-open") ? closeSidebar() : openSidebar();
+  });
+
+  document.getElementById("navClose")?.addEventListener("click", closeSidebar);
+  overlay.addEventListener("click", closeSidebar);
+
   menu.querySelectorAll("a").forEach(function (link) {
-    link.addEventListener("click", function () {
-      menu.classList.remove("nav-open");
-      toggle.classList.remove("nav-hamburger--open");
-      toggle.setAttribute("aria-expanded", "false");
+    link.addEventListener("click", function (e) {
+      if (!isMobile()) return;
+      var href = link.getAttribute("href");
+      // Close first, then navigate after a tiny delay so the browser doesn't cancel
+      e.preventDefault();
+      closeSidebar();
+      setTimeout(function () {
+        window.location.href = href;
+      }, 120);
     });
   });
 
-  // Close when clicking outside
-  document.addEventListener("click", function (e) {
-    if (!menu.contains(e.target) && !toggle.contains(e.target)) {
-      menu.classList.remove("nav-open");
-      toggle.classList.remove("nav-hamburger--open");
-      toggle.setAttribute("aria-expanded", "false");
-    }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && isMobile()) closeSidebar();
   });
 });

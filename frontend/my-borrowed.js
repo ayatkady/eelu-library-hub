@@ -72,23 +72,26 @@ async function loadBorrowedBooks() {
     const loans = result.data || [];
 
     // ── Stats ──────────────────────────────────────────────────
-    const now       = new Date();
-    const active    = loans.filter((l) => l.status === "borrowed");
-    const reserved  = loans.filter((l) => l.status === "reserved");
-    const dueSoon   = active.filter((l) => l.dueDate && daysLeft(l.dueDate) <= 3 && daysLeft(l.dueDate) >= 0);
-    const overdue   = active.filter((l) => l.dueDate && new Date(l.dueDate) < now);
+    const now      = new Date();
+    const active   = loans.filter((l) => l.status === "borrowed");
+    const reserved = loans.filter((l) => l.status === "reserved");
+    const overdue  = active.filter((l) => l.dueDate && new Date(l.dueDate) < now);
+    const dueSoon  = active.filter((l) => {
+      const d = daysLeft(l.dueDate);
+      return d !== null && d >= 0 && d <= 3;
+    });
 
-    // Update stat cards
-    const statEl = (cls) => document.querySelector(cls);
-    const totalEl    = document.querySelector(".totalBorrowedCount");
-    const reservedEl = document.querySelector(".totalReservedCount");
-    const dueSoonEl  = document.querySelector(".totalDueSoonCount");
-    if (totalEl)    totalEl.textContent    = active.length;
-    if (reservedEl) reservedEl.textContent = reserved.length;
-    if (dueSoonEl)  dueSoonEl.textContent  = dueSoon.length + overdue.length;
+    // Update stat cards — target the h2 directly by ID
+    const setCount = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+    setCount("statBorrowed", active.length);
+    setCount("statReserved", reserved.length);
+    setCount("statDueSoon",  dueSoon.length + overdue.length);
 
     // Update section heading
-    const headingEl = document.querySelector(".currentlyBorrowedTitle");
+    const headingEl = document.getElementById("currentlyBorrowedTitle");
     if (headingEl) headingEl.textContent = `Currently Borrowed (${active.length + reserved.length})`;
 
     // ── Cards ──────────────────────────────────────────────────
