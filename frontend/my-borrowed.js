@@ -1,5 +1,17 @@
 const API = "http://localhost:3000/api";
 
+// ── Book cover helper — fallback to generated placeholder ────────
+function bookCoverUrl(coverImageUrl, title) {
+  if (coverImageUrl && coverImageUrl.trim()) return coverImageUrl.trim();
+  const colors = ['0f2a4a', '1a4a7a', '173c6b', '0b5bb5', '1e3a5f', '2d6a9f'];
+  let hash = 0;
+  const seed = title || 'book';
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) & 0xffffffff;
+  const color = colors[Math.abs(hash) % colors.length];
+  const label = encodeURIComponent(seed.substring(0, 15));
+  return `https://placehold.co/95x130/${color}/ffffff?text=${label}&font=open-sans`;
+}
+
 // ── Auth guard ────────────────────────────────────────────────────
 if (!localStorage.getItem("token")) {
   window.location.href = "login.html";
@@ -113,9 +125,7 @@ async function loadBorrowedBooks() {
       const title  = book.title  || "Unknown Book";
       const author = book.author || "Unknown Author";
       const cat    = book.category || "";
-      const cover  = book.coverImageUrl
-        ? `<img src="${book.coverImageUrl}" alt="${title}" class="rounded" width="95" height="130" style="object-fit:cover">`
-        : `<div style="width:95px;height:130px;background:#f0f4f8;border-radius:6px;display:flex;align-items:center;justify-content:center"><i class="bi bi-book fs-3 text-muted"></i></div>`;
+      const cover  = `<img src="${bookCoverUrl(book.coverImageUrl, title)}" alt="${title}" class="rounded" width="95" height="130" style="object-fit:cover" onerror="this.onerror=null;this.src='https://placehold.co/95x130/0f2a4a/ffffff?text=Book'">`;
 
       const borrowed  = fmtDate(loan.borrowDate);
       const due       = fmtDate(loan.dueDate);

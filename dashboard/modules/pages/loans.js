@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { showToast } from '../utils.js';
+import { showToast, avatarDataUri } from '../utils.js';
 
 let allLoans = [];
 
@@ -39,7 +39,7 @@ function renderTable(loans) {
         <td style="font-family:monospace;font-size:0.8rem">#${idShort}</td>
         <td>
           <div class="member-cell">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}" alt="" />
+            <img src="${avatarDataUri(name, 32)}" alt="" />
             <div>
               <span style="display:block">${name}</span>
               <span style="font-size:0.72rem;color:var(--text-muted)">${user.email || ''}</span>

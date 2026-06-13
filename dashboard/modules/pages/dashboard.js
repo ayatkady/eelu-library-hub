@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { showToast } from '../utils.js';
+import { showToast, avatarDataUri } from '../utils.js';
 
 function fmtDate(d) {
   if (!d) return '—';
@@ -43,7 +43,7 @@ function renderRecentLoans(rows) {
       <tr>
         <td>
           <div class="member-cell">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}" alt="" />
+            <img src="${avatarDataUri(name, 32)}" alt="" />
             <span>${name}</span>
           </div>
         </td>

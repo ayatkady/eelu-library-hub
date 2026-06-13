@@ -81,8 +81,17 @@ function setupTheme() {
   });
 }
 
-function avatarUrl(seed) {
-  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
+function avatarUrl(name) {
+  const parts    = (name || '?').trim().split(/\s+/);
+  const initials = parts.length >= 2
+    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    : (parts[0][0] || '?').toUpperCase();
+  const palette = ['#0f2a4a','#173c6b','#1a4a7a','#0b5bb5','#1e3a5f','#2d6a9f'];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) & 0xffffffff;
+  const bg  = palette[Math.abs(hash) % palette.length];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="${bg}"/><text x="16" y="16" dy="0.35em" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#fff">${initials}</text></svg>`;
+  return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
 }
 
 function statusClass(status) {

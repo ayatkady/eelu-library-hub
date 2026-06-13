@@ -1,7 +1,32 @@
 import { api } from '../api.js';
-import { showToast } from '../utils.js';
+import { showToast, avatarDataUri } from '../utils.js';
 
 let allMembers = [];
+
+// ── Book cover: colored SVG placeholder ───────────────────────────
+function bookCoverDataUri(title) {
+  const palette = ['#0f2a4a','#173c6b','#1a4a7a','#0b5bb5','#1e3a5f','#2d6a9f'];
+  let hash = 0;
+  for (let i = 0; i < title.length; i++) hash = (hash * 31 + title.charCodeAt(i)) & 0xffffffff;
+  const bg    = palette[Math.abs(hash) % palette.length];
+  const label = title.substring(0, 12);
+  const words = label.split(' ');
+  const lines = [];
+  let line = '';
+  words.forEach(w => {
+    if ((line + ' ' + w).trim().length > 8) { lines.push(line.trim()); line = w; }
+    else { line = (line + ' ' + w).trim(); }
+  });
+  if (line) lines.push(line);
+  const textY  = 24 - (lines.length - 1) * 7;
+  const textEl = lines.map((l, i) =>
+    `<text x="18" y="${textY + i * 14}" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="9" font-weight="600" fill="#fff">${l}</text>`
+  ).join('');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="48" viewBox="0 0 36 48"><rect width="36" height="48" rx="4" fill="${bg}"/><rect x="4" y="4" width="28" height="40" rx="2" fill="rgba(255,255,255,0.08)"/>${textEl}</svg>`;
+  return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+}
+
+export { bookCoverDataUri };
 
 function renderGrid(members) {
   const grid = document.getElementById('membersGrid');
@@ -19,7 +44,7 @@ function renderGrid(members) {
     return `
       <article class="member-card" data-id="${m._id}">
         <div style="position:relative">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}" alt="${name}" />
+          <img src="${avatarDataUri(name)}" alt="${name}" />
           <span class="status ${statusCls}" style="position:absolute;top:4px;right:4px;font-size:0.65rem">${statusLabel}</span>
         </div>
         <h3>${name}</h3>

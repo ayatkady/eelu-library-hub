@@ -1,5 +1,17 @@
 const API = "http://localhost:3000/api";
 
+// ── Book cover helper — fallback to generated placeholder ────────
+function bookCoverUrl(coverImageUrl, title) {
+  if (coverImageUrl && coverImageUrl.trim()) return coverImageUrl.trim();
+  const colors = ['0f2a4a', '1a4a7a', '173c6b', '0b5bb5', '1e3a5f', '2d6a9f'];
+  let hash = 0;
+  const seed = title || 'book';
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) & 0xffffffff;
+  const color = colors[Math.abs(hash) % colors.length];
+  const label = encodeURIComponent(seed.substring(0, 15));
+  return `https://placehold.co/200x280/${color}/ffffff?text=${label}&font=open-sans`;
+}
+
 // ── Auth guard ────────────────────────────────────────────────────
 if (!localStorage.getItem("token")) {
   window.location.href = "login.html";
@@ -84,9 +96,7 @@ function renderBooks(books) {
       : `<i class="bi bi-x-circle-fill me-1"></i>Not available`;
     const availCls  = avail > 0 ? "book-avail-ok" : "book-avail-no";
 
-    const cover = b.coverImageUrl
-      ? `<img src="${b.coverImageUrl}" alt="${escHtml(b.title)}" loading="lazy" />`
-      : `<div class="book-card-no-cover"><i class="bi bi-book"></i></div>`;
+    const cover = `<img src="${bookCoverUrl(b.coverImageUrl, b.title)}" alt="${escHtml(b.title)}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/200x280/0f2a4a/ffffff?text=Book'" />`;
 
     const actionBtn = avail > 0
       ? `<button class="book-borrow-btn" onclick="handleBorrow(event,'${b._id}',this)">
@@ -252,4 +262,23 @@ function escHtml(str) {
 }
 
 // ── Init ──────────────────────────────────────────────────────────
-loadBooks();
+loadBooks().then(() => {
+  // Apply URL params after books are loaded
+  const params  = new URLSearchParams(window.location.search);
+  const faculty = (params.get("faculty") || "").toUpperCase();
+  if (faculty === "IT" || faculty === "BA") {
+    const select = document.getElementById("filterFaculty");
+    if (select) {
+      // Find the matching option — text contains "IT" or "BA"
+      for (const opt of select.options) {
+        const txt = opt.text.toUpperCase();
+        if (faculty === "IT" && txt.includes("INFORMATION")) { select.value = opt.text; break; }
+        if (faculty === "BA" && txt.includes("BUSINESS"))    { select.value = opt.text; break; }
+      }
+      renderBooks(getFiltered());
+      // Scroll to book grid
+      document.getElementById("bookGrid")?.closest("section,div")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+});

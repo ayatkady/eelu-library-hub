@@ -23,23 +23,20 @@
   }
 })();
 
-// ── Mobile Sidebar Nav ─────────────────────────────────────────
+// ── Mobile Sidebar Nav ────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", function () {
-  var MOBILE_BP = 991; // same breakpoint as CSS
 
   var toggle = document.getElementById("navToggle");
   var menu   = document.getElementById("navMenu");
   if (!toggle || !menu) return;
 
-  // ── Overlay ────────────────────────────────────────────────────
+  // ── Create overlay and append to body ─────────────────────────
   var overlay = document.createElement("div");
-  overlay.id        = "navOverlay";
   overlay.className = "nav-sidebar-overlay";
   document.body.appendChild(overlay);
 
-  // ── Sidebar header (close button) ─────────────────────────────
+  // ── Inject sidebar header (close btn + title) ─────────────────
   var sidebarHeader = document.createElement("div");
-  sidebarHeader.id        = "navSidebarHeader";
   sidebarHeader.className = "nav-sidebar-header";
   sidebarHeader.innerHTML =
     '<span class="nav-sidebar-title"><i class="bi bi-book me-2"></i>EELU Library</span>' +
@@ -48,10 +45,10 @@ document.addEventListener("DOMContentLoaded", function () {
     '</button>';
   menu.insertBefore(sidebarHeader, menu.firstChild);
 
-  // ── Mobile user info block ─────────────────────────────────────
-  var userName = localStorage.getItem("userName")     || "Student";
-  var faculty  = localStorage.getItem("faculty")      || "IT";
-  var year     = localStorage.getItem("academicYear") || "Year 1";
+  // ── Inject mobile user block at bottom of sidebar ─────────────
+  var uName = localStorage.getItem("userName") || "Student";
+  var uFac  = localStorage.getItem("faculty")  || "IT";
+  var uYear = localStorage.getItem("academicYear") || "Year 1";
 
   var mobileUser = document.createElement("div");
   mobileUser.className = "nav-mobile-user";
@@ -59,8 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
     '<div class="nav-mobile-user-info">' +
       '<div class="nav-mobile-avatar"><i class="bi bi-person-fill"></i></div>' +
       '<div>' +
-        '<div class="nav-mobile-name">' + userName + '</div>' +
-        '<div class="nav-mobile-meta">' + faculty + ' · ' + year + '</div>' +
+        '<div class="nav-mobile-name">' + uName + '</div>' +
+        '<div class="nav-mobile-meta">' + uFac + ' · ' + uYear + '</div>' +
       '</div>' +
     '</div>' +
     '<button class="nav-mobile-logout" id="mobileLogoutBtn">' +
@@ -68,21 +65,15 @@ document.addEventListener("DOMContentLoaded", function () {
     '</button>';
   menu.appendChild(mobileUser);
 
-  document.getElementById("mobileLogoutBtn")?.addEventListener("click", function () {
+  document.getElementById("mobileLogoutBtn").addEventListener("click", function () {
     localStorage.clear();
     window.location.href = "login.html";
   });
 
-  // ── Open / Close ───────────────────────────────────────────────
-  function isMobile() {
-    return window.innerWidth <= MOBILE_BP;
-  }
-
+  // ── Open / Close helpers ───────────────────────────────────────
   function openSidebar() {
-    if (!isMobile()) return;
     menu.classList.add("nav-open");
     overlay.classList.add("overlay-open");
-    toggle.classList.add("nav-hamburger--open");
     toggle.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
   }
@@ -90,39 +81,40 @@ document.addEventListener("DOMContentLoaded", function () {
   function closeSidebar() {
     menu.classList.remove("nav-open");
     overlay.classList.remove("overlay-open");
-    toggle.classList.remove("nav-hamburger--open");
     toggle.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
   }
 
-  // Reset sidebar state when resizing to desktop
-  window.addEventListener("resize", function () {
-    if (!isMobile()) closeSidebar();
+  // ── Toggle button ──────────────────────────────────────────────
+  toggle.addEventListener("click", function () {
+    if (menu.classList.contains("nav-open")) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
   });
 
-  // ── Events ─────────────────────────────────────────────────────
-  toggle.addEventListener("click", function (e) {
-    e.stopPropagation();
-    menu.classList.contains("nav-open") ? closeSidebar() : openSidebar();
-  });
+  // ── Close button inside sidebar ────────────────────────────────
+  document.getElementById("navClose").addEventListener("click", closeSidebar);
 
-  document.getElementById("navClose")?.addEventListener("click", closeSidebar);
+  // ── Overlay click closes sidebar ───────────────────────────────
   overlay.addEventListener("click", closeSidebar);
 
+  // ── Nav links — navigate directly (no delay tricks) ───────────
   menu.querySelectorAll("a").forEach(function (link) {
-    link.addEventListener("click", function (e) {
-      if (!isMobile()) return;
-      var href = link.getAttribute("href");
-      // Close first, then navigate after a tiny delay so the browser doesn't cancel
-      e.preventDefault();
+    link.addEventListener("click", function () {
       closeSidebar();
-      setTimeout(function () {
-        window.location.href = href;
-      }, 120);
+      // Let the browser follow the href naturally — no preventDefault
     });
   });
 
+  // ── Escape key ─────────────────────────────────────────────────
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && isMobile()) closeSidebar();
+    if (e.key === "Escape") closeSidebar();
+  });
+
+  // ── Reset on desktop resize ────────────────────────────────────
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 991) closeSidebar();
   });
 });

@@ -49,7 +49,14 @@ function renderBook(b) {
   // Cover
   const coverImg = document.getElementById("bdCoverImg");
   if (coverImg) {
-    coverImg.src = b.coverImageUrl || "https://placehold.co/300x420?text=No+Cover";
+    const colors = ['0f2a4a', '1a4a7a', '173c6b', '0b5bb5', '1e3a5f', '2d6a9f'];
+    let hash = 0;
+    const seed = b.title || 'book';
+    for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) & 0xffffffff;
+    const color = colors[Math.abs(hash) % colors.length];
+    const fallback = `https://placehold.co/300x420/${color}/ffffff?text=${encodeURIComponent(seed.substring(0, 15))}&font=open-sans`;
+    coverImg.src = (b.coverImageUrl && b.coverImageUrl.trim()) ? b.coverImageUrl.trim() : fallback;
+    coverImg.onerror = function () { this.onerror = null; this.src = fallback; };
     coverImg.alt = b.title;
   }
 

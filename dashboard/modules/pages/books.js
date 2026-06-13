@@ -1,5 +1,5 @@
 import { api } from '../api.js';
-import { showToast } from '../utils.js';
+import { showToast, avatarDataUri } from '../utils.js';
 
 const FACULTIES     = ['IT', 'BA'];
 const YEARS         = ['Year 1', 'Year 2', 'Year 3', 'Year 4'];
@@ -9,6 +9,23 @@ const CATEGORIES    = ['Computer Science', 'Web Development', 'Artificial Intell
 
 let allBooks = [];
 let editingId = null;
+
+// ── Inline SVG book cover — no external requests ──────────────────
+function bookCoverSvg(title, w, h) {
+  w = w || 36; h = h || 48;
+  const palette = ['#0f2a4a','#173c6b','#1a4a7a','#0b5bb5','#1e3a5f','#2d6a9f'];
+  let hash = 0;
+  for (let i = 0; i < title.length; i++) hash = (hash * 31 + title.charCodeAt(i)) & 0xffffffff;
+  const bg    = palette[Math.abs(hash) % palette.length];
+  const label = title.substring(0, 10);
+  const svg   = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" rx="4" fill="${bg}"/><rect x="3" y="3" width="${w-6}" height="${h-6}" rx="2" fill="rgba(255,255,255,0.08)"/><text x="${w/2}" y="${h/2}" dy="0.35em" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="7" font-weight="600" fill="#fff">${label}</text></svg>`;
+  return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+}
+
+function bookCoverUrl(b) {
+  if (b.coverImageUrl && b.coverImageUrl.trim()) return b.coverImageUrl.trim();
+  return bookCoverSvg(b.title || 'Book');
+}
 
 function fmtDate(d) {
   if (!d) return '—';
@@ -31,9 +48,7 @@ function renderTable(books) {
       <tr>
         <td>
           <div style="display:flex;align-items:center;gap:10px">
-            ${b.coverImageUrl
-              ? `<img src="${b.coverImageUrl}" alt="" style="width:36px;height:48px;object-fit:cover;border-radius:4px;flex-shrink:0">`
-              : `<div style="width:36px;height:48px;background:var(--border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px">📚</div>`}
+            <img src="${bookCoverUrl(b)}" alt="${b.title}" style="width:36px;height:48px;object-fit:cover;border-radius:4px;flex-shrink:0" onerror="this.onerror=null;this.src='https://placehold.co/36x48/0f2a4a/ffffff?text=Book'">
             <div>
               <strong style="display:block">${b.title}</strong>
               <span style="font-size:0.75rem;color:var(--text-muted)">${b.faculty} · ${b.academicYear}</span>

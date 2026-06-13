@@ -266,28 +266,17 @@ body {
   padding: 0;
   flex-shrink: 0;
   transition: background 0.2s;
-  z-index: 110;
+  z-index: 105;
 }
 .combined-page .nav-hamburger:hover { background: rgba(255,255,255,0.2); }
 
+/* ── Hamburger spans ── */
 .combined-page .nav-hamburger span {
   display: block;
   width: 20px;
   height: 2px;
   background: #fff;
   border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s;
-}
-
-/* X animation when open */
-.combined-page .nav-hamburger--open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.combined-page .nav-hamburger--open span:nth-child(2) {
-  opacity: 0;
-}
-.combined-page .nav-hamburger--open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
 }
 
 /* ── Sidebar inner header — only visible inside the mobile sidebar ── */
@@ -299,6 +288,67 @@ body {
 .combined-page .nav-mobile-user {
   display: none;
 }
+
+/* ── Desktop nav links (must come BEFORE media queries) ── */
+.combined-page .nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.combined-page .main-header .nav-links a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+}
+
+.combined-page .main-header .nav-links a:hover,
+.combined-page .main-header .nav-links a.nav-active { color: #fff; }
+
+.combined-page .main-header .user-block {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.combined-page .main-header .user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+
+.combined-page .main-header .user-name { font-weight: 600; font-size: 0.875rem; line-height: 1.2; }
+.combined-page .main-header .user-meta { font-size: 0.72rem; opacity: 0.8; }
+
+.combined-page .btn-logout {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.55);
+  padding: 0.4rem 0.9rem;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.combined-page .btn-logout:hover { background: #fff; color: #0f2a4a; }
 
 /* ══════════════════════════════════════════════
    RESPONSIVE — Tablet & Mobile
@@ -338,15 +388,15 @@ body {
   }
 
   /* ── Sidebar overlay (backdrop) ── */
-  .combined-page .nav-sidebar-overlay {
+  .nav-sidebar-overlay {
     display: none;
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
-    z-index: 190;
+    z-index: 1050;
     pointer-events: none;
   }
-  .combined-page .nav-sidebar-overlay.overlay-open {
+  .nav-sidebar-overlay.overlay-open {
     display: block;
     pointer-events: auto;
     animation: fadeOverlay 0.2s ease;
@@ -368,7 +418,7 @@ body {
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    z-index: 200;
+    z-index: 1100;
     padding: 0;
     overflow-y: auto;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -376,16 +426,6 @@ body {
     box-shadow: none;
     pointer-events: none;
     visibility: hidden;
-  }
-
-  /* Sidebar brand header */
-  .combined-page .nav-links::before {
-    content: '';
-    display: block;
-    height: 64px;
-    background: rgba(0,0,0,0.25);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    flex-shrink: 0;
   }
 
   /* Open state — slide in */
@@ -604,66 +644,6 @@ body {
 }
 
 
-
-.combined-page .nav-links {
-  display: flex;
-  align-items: center;
-  gap: 1.6rem;
-  flex: 1;
-  justify-content: center;
-}
-
-.combined-page .main-header .nav-links a {
-  color: rgba(255,255,255,0.85);
-  text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  transition: color 0.2s;
-}
-
-.combined-page .main-header .nav-links a:hover,
-.combined-page .main-header .nav-links a.nav-active { color: #fff; }
-
-.combined-page .main-header .user-block {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-shrink: 0;
-}
-
-.combined-page .main-header .user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.95rem;
-}
-
-.combined-page .main-header .user-name { font-weight: 600; font-size: 0.875rem; line-height: 1.2; }
-.combined-page .main-header .user-meta { font-size: 0.72rem; opacity: 0.8; }
-
-.combined-page .btn-logout {
-  background: transparent;
-  color: #fff;
-  border: 1.5px solid rgba(255,255,255,0.55);
-  padding: 0.4rem 0.9rem;
-  border-radius: 7px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  white-space: nowrap;
-}
-.combined-page .btn-logout:hover { background: #fff; color: #0f2a4a; }
 
 /* ── Hero ── */
 .combined-page .hero-section {
