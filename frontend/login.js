@@ -39,7 +39,7 @@ loginForm.addEventListener("submit", async (e) => {
 
       // Redirect admin to dashboard, students to search
       if (user.role === "admin") {
-        window.location.href = "https://adaptable-balance-production-3f6f.up.railway.app/dashboard";
+        window.location.href = "https://eelu-library-hub-rjak.vercel.app";
       } else {
         window.location.href = "search.html";
       }
