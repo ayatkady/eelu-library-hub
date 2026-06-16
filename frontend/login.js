@@ -1,4 +1,4 @@
-const loginForm = document.getElementById("loginForm");
+﻿const loginForm = document.getElementById("loginForm");
 
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -18,7 +18,7 @@ loginForm.addEventListener("submit", async (e) => {
   btn.textContent = "Signing in…";
 
   try {
-    const res  = await fetch("http://localhost:3000/api/auth/login", {
+    const res  = await fetch("https://adaptable-balance-production-3f6f.up.railway.app/api/auth/login", {
       method:  "POST",
       headers: { "Content-Type": "application/json" },
       body:    JSON.stringify({ email, password }),
@@ -39,7 +39,7 @@ loginForm.addEventListener("submit", async (e) => {
 
       // Redirect admin to dashboard, students to search
       if (user.role === "admin") {
-        window.location.href = "http://localhost:3000/dashboard";
+        window.location.href = "https://adaptable-balance-production-3f6f.up.railway.app/dashboard";
       } else {
         window.location.href = "search.html";
       }
@@ -71,3 +71,4 @@ function clearAlert() {
   const el = document.getElementById("loginAlert");
   if (el) el.remove();
 }
+

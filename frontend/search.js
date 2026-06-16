@@ -1,4 +1,4 @@
-const API = "http://localhost:3000/api";
+﻿const API = "https://adaptable-balance-production-3f6f.up.railway.app/api";
 
 // ── Book cover helper — fallback to generated placeholder ────────
 function bookCoverUrl(coverImageUrl, title) {
@@ -282,3 +282,4 @@ loadBooks().then(() => {
     }
   }
 });
+

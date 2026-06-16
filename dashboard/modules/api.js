@@ -1,4 +1,4 @@
-const BASE = window.__API_BASE__ || 'http://localhost:3000/api';
+﻿const BASE = window.__API_BASE__ || 'https://adaptable-balance-production-3f6f.up.railway.app/api';
 
 function getToken() {
   return localStorage.getItem('adminToken') || null;
@@ -41,3 +41,4 @@ export const api = {
   patch:(p, body)  => request(p, { method: 'PATCH', body: JSON.stringify(body) }),
   del:  (p)        => request(p, { method: 'DELETE' }),
 };
+

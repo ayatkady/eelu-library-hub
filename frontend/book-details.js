@@ -1,4 +1,4 @@
-const API = "http://localhost:3000/api";
+﻿const API = "https://adaptable-balance-production-3f6f.up.railway.app/api";
 
 // ── Auth guard ────────────────────────────────────────────────────
 if (!localStorage.getItem("token")) {
@@ -248,3 +248,4 @@ function showError(msg) {
 
 // ── Init ──────────────────────────────────────────────────────────
 loadBook();
+

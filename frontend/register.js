@@ -1,4 +1,4 @@
-const registerForm = document.getElementById("registerForm");
+﻿const registerForm = document.getElementById("registerForm");
 
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -27,7 +27,7 @@ registerForm.addEventListener("submit", async (e) => {
   submitBtn.textContent = "Registering…";
 
   try {
-    const res = await fetch("http://localhost:3000/api/auth/register", {
+    const res = await fetch("https://adaptable-balance-production-3f6f.up.railway.app/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ fullName, email, password, faculty, academicYear }),
@@ -78,3 +78,4 @@ function clearError() {
   const el = document.getElementById("formAlert");
   if (el) el.remove();
 }
+
